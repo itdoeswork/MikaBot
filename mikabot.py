@@ -51,7 +51,6 @@ async def on_message(message):
         embed.add_field(name="-quote", value="Pull a random quote from The List of Quotes!", inline=False)
         embed.add_field(name="-ask mika (message)", value="Ask me a question! I'm a psychic you know.", inline=False)
         embed.add_field(name="-what should I draw", value="I'll give you a prompt", inline=False)
-        embed.add_field(name="-mika pic", value="Gives you a random mika pic", inline=False)
         embed.add_field(name="-coin", value="Flip a coin!", inline=False)
         embed.add_field(name="-ping", value="Pong?", inline=False)
         embed.add_field(name="-does mika approve?", value="Does she??", inline=False)
@@ -60,7 +59,7 @@ async def on_message(message):
                                   
                                                  
  
-    if message.content.upper().startswith("-MIKA PIC"):
+    if message.content.upper().startswith("//-MIKA PIC"):
          my_path = r"C:\Users\Melek\Pictures\mika"      
          choice = os.path.join(my_path, random.choice(os.listdir(my_path))) 
          await client.send_message(message.channel, choice)
@@ -146,7 +145,7 @@ async def on_message(message):
         else:
             await client.send_message(message.channel, "thou shall not press the button!")
     if message.content.upper().startswith("-DOES MIKA APPROVE"):
-        if "453616927554797578" in [role.id for role in message.author.roles]:
+        if "452673349198544896" in [role.id for role in message.author.roles]:
             await client.send_message(message.channel, "you are Mikapproved! ^-^")
         else:
             await client.send_message(message.channel, "you are NOT Mikapproved yet! >.<'")
