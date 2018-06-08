@@ -2,12 +2,13 @@
   "name": "Test",
   "description": "Test",
   "version": "0.0.0",
-  "main": "bot.js",
+  "main": "mikabot.py",
   "scripts": {
-    "start": "node bot.js"
+    "start": "python3 mikabot.py"
   },
   "dependencies": {
     "discord.js": "11.1.0",
     "request": "2.81.0"
   }
 }
+
