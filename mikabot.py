@@ -18,7 +18,7 @@ client = commands.Bot(command_prefix = "-")
 @client.event
 async def on_ready():
     print("MikaBot is ready to fight!")
-    await client.change_presence(game=Game(name="with Angel<3//-help"))
+    await client.change_presence(game=Game(name="with Angel<3|-help"))
     
               
 @client.event
