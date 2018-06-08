@@ -41,7 +41,7 @@ async def on_message(message):
         embed.add_field(name="-hug @user", value="Hug someone! ^-^", inline=False)
         embed.add_field(name="-secret hug @user", value="Hug someone secretly!", inline=False)
         embed.add_field(name="-love @user", value="Declare your love!", inline=False)
-        embed.add_field(name="-secret love @user", value="Declare your live in secrecy, I won't tell ^-^", inline=False)
+        embed.add_field(name="-secret love @user", value="Declare your love in secrecy, I won't tell ^-^", inline=False)
         embed.add_field(name="-fight me", value="Challenge me to a fight", inline=False)
         embed.add_field(name="-duel @user", value="Challenge someone else to a fight", inline=False)
         embed.add_field(name="-dance off @user", value="If figting is not your style, challenge your opponent to a dance battle", inline=False)
