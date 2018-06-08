@@ -404,4 +404,4 @@ async def on_message(message):
     
 
      
-@client.event(process.env.BOT_TOKEN)
+client.run(process.env.BOT_TOKEN)
