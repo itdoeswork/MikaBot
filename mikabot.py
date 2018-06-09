@@ -57,12 +57,7 @@ async def on_message(message):
         embed.add_field(name="-pointless", value="Press The Pointless Button!", inline=False)
         await client.send_message(message.author, embed=embed)
                                   
-                                                 
- 
-    if message.content.upper().startswith("//-MIKA PIC"):
-         my_path = r"C:\Users\Melek\Pictures\mika"      
-         choice = os.path.join(my_path, random.choice(os.listdir(my_path))) 
-         await client.send_message(message.channel, choice)
+                                              
          
     if message.content.upper().startswith("I KIN MIKA"): 
          await client.send_message(message.author, "don't kin me. you furry.")
