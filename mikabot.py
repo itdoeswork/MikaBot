@@ -12,6 +12,7 @@ from discord import Game
 
 Client = discord.Client()
 client = commands.Bot(command_prefix = "-")
+command_prefix = "-"
 
 
         
@@ -25,12 +26,12 @@ async def on_ready():
 async def on_message(message):   
     if message.author == client.user:
         return
-    if message.content.upper().startswith("-INFO"):
+    if message.content.upper().startswith(command_prefix + "INFO"):
         embed = discord.Embed(title="MikaBot", description="The cutest bot on discord! ^-^", color=0x7f1ae5)
         embed.add_field(name="Owner", value="angel#9928", inline=False)
         await client.send_message(message.channel, embed=embed)
         
-    if message.content.upper().startswith("-HELP"):
+    if message.content.upper().startswith(command_prefix + "HELP"):
         embed = discord.Embed(title="Hi I'm MikaBot! ^-^", description="These are my commands:", color=0x7f1ae5)
         embed.add_field(name="-help", value="uh.. you should know what this does.. you just gave the command..", inline=False)
         embed.add_field(name="-info", value="gives you basic info about me!", inline=False)
@@ -70,7 +71,7 @@ async def on_message(message):
     
     
          
-    if message.content.upper().startswith("-HELLO"):
+    if message.content.upper().startswith(command_prefix + "HELLO"):
         msg = " {0.author.mention}".format(message)
         await client.send_message(message.channel, random.choice(["hi, hi, hi",
                                                                      "sup",
@@ -87,7 +88,7 @@ async def on_message(message):
                                                                      "Did ya miss me",
                                                                      "meow!",
                                                                      "hello",])+ msg +"  "+"^-^" )
-    if message.content.upper().startswith("-BYE"):
+    if message.content.upper().startswith(command_prefix + "BYE"):
         msg = " {0.author.mention}".format(message)
         await client.send_message(message.channel, random.choice(["bye",
                                                                      "goodbye",
@@ -99,13 +100,13 @@ async def on_message(message):
                                                                      "take care",
                                                                      "buh-bye friend",
                                                                      "remember to close the god damn door",])+ msg +"  "+"^-^" )
-    if message.content.upper().startswith("-MORNING"):
+    if message.content.upper().startswith(command_prefix + "MORNING"):
         msg = " {0.author.mention}".format(message)
         await client.send_message(message.channel, random.choice(["good morning",
                                                                      "meow",
                                                                      "too early",
                                                                      "I need another nap",])+ msg +"  "+"^-^" )
-    if message.content.upper().startswith("-NIGHT"):
+    if message.content.upper().startswith(command_prefix + "NIGHT"):
         msg = " {0.author.mention}".format(message)
         await client.send_message(message.channel, random.choice(["good night",
                                                                      "nighty",
@@ -113,7 +114,7 @@ async def on_message(message):
                                                                      "nighty night",
                                                                      "don't let the shadows get you",
                                                                      "see you in the morning",])+ msg +"  "+"^-^" )      
-    if message.content.upper() == "-FIGHT ME":
+    if message.content.upper().startswith(command_prefix + "FIGHT ME"):
                 await client.send_message(message.channel, random.choice([":fencer:",
                                                                           "come at me bro :fencer:",
                                                                           "can you beat me in a dance competition? :man_dancing:",
@@ -128,24 +129,24 @@ async def on_message(message):
                                                                           ":fencer: :fencer: :fencer:",
                                                                           "I have seen all of naruto. you can't defeat me :fencer:",
                                                                           ":fencer: :fencer: :fencer:",]))
-    if message.content.upper().startswith("-PING"):
+    if message.content.upper().startswith(command_prefix + "PING"):
         userID = message.author.id
         await client.send_message(message.channel, "<@%s> Pong!" % (userID))
-    if message.content.upper().startswith("-SAY"):
+    if message.content.upper().startswith(command_prefix + "SAY"):
         args = message.content.split(" ")
         await client.send_message(message.channel, "%s" %(" ".join(args[1:])))
-    if message.content.upper() == "-POINTLESS":
+    if message.content.upper().startswith(command_prefix + "POINTLESS"):
         if message.author.id == "343160195075276801":
             await client.send_message(message.channel, "pointless button has been pressed")
         else:
             await client.send_message(message.channel, "thou shall not press the button!")
-    if message.content.upper().startswith("-DOES MIKA APPROVE"):
+    if message.content.upper().startswith(command_prefix + "DOES MIKA APPROVE"):
         if "452673349198544896" in [role.id for role in message.author.roles]:
             await client.send_message(message.channel, "you are Mikapproved! ^-^")
         else:
             await client.send_message(message.channel, "you are NOT Mikapproved yet! >.<'")
         
-    if message.content.upper().startswith("-ADD QUOTE"):
+    if message.content.upper().startswith(command_prefix + "ADD QUOTE"):
         if not os.path.isfile("quote_file.pk1"):
             quote_list = []
         else:
@@ -154,11 +155,11 @@ async def on_message(message):
         quote_list.append(message.content[10:])
         with open("quote_file.pk1", "w") as quote_file:
                 json.dump(quote_list , quote_file)
-    if message.content.upper().startswith("-QUOTE"):
+    if message.content.upper().startswith(command_prefix + "QUOTE"):
         with open("quote_file.pk1", "r") as quote_file:
             quote_list = json.load(quote_file)
         await client.send_message(message.channel, random.choice(quote_list))
-    if message.content.upper().startswith("-SHAME"):
+    if message.content.upper().startswith(command_prefix + "SHAME"):
         for user in message.mentions:
             userID = message.author.id
             auth = "<@%s> " % (userID)
@@ -167,9 +168,9 @@ async def on_message(message):
         
             
         
-    if message.content.upper() == "-CAN I KIN MIKA":
+    if message.content.upper().startswith(command_prefix + "CAN I KIN MIKA"):
         await client.send_message(message.channel, "beGONE furry :fencer:")
-    if message.content.upper().startswith("-HUG"):
+    if message.content.upper().startswith(command_prefix + "HUG"):
         for user in message.mentions:
             userID = message.author.id
             auth = "<@%s> " % (userID)
@@ -186,7 +187,7 @@ async def on_message(message):
                                                                      "fucking hugs",]) + rec + ":turtle:")
     
         
-    if message.content.upper().startswith("-SECRET HUG"):
+    if message.content.upper().startswith(command_prefix + "SECRET HUG"):
         for user in message.mentions:
             msg = "Someone has hugged {}".format(user.mention)
             await client.send_message(message.channel,  msg + ". " + random.choice(["was it you Ashe?",
@@ -198,7 +199,7 @@ async def on_message(message):
                                                                      "   ",
                                                                      "   ",               
                                                                      "Zoinks!",]) + ":ghost:")
-    if message.content.upper().startswith("-LOVE"):
+    if message.content.upper().startswith(command_prefix + "LOVE"):
         for user in message.mentions:
             userID = message.author.id
             auth = "<@%s> " % (userID)
@@ -215,7 +216,7 @@ async def on_message(message):
                                                                      "wants to hold",
                                                                      "wants to be loved by",
                                                                      "would never anime betray",]) + rec + ":heart:")
-    if message.content.upper().startswith("-SECRET LOVE"):
+    if message.content.upper().startswith(command_prefix + "SECRET LOVE"):
         for user in message.mentions:
             msg = "Someone secretly loves {}".format(user.mention)
             await client.send_message(message.channel,  msg + ". " + random.choice(["was it you John?",
@@ -227,14 +228,14 @@ async def on_message(message):
                                                                      "   ",
                                                                      "   ",
                                                                      "wompety womp!",]) + ":thinking:")
-    if message.content.upper().startswith("-FIGHT"):
+    if message.content.upper().startswith(command_prefix + "FIGHT"):
         for user in message.mentions:
             userID = message.author.id
             auth = "<@%s>" % (userID)
             msg = "wants to fight {}".format(user.mention)
             await client.send_message(message.channel, auth + " " + msg + ":fencer:")
 
-    if message.content.upper().startswith("-DANCE OFF"):
+    if message.content.upper().startswith(command_prefix + "DANCE OFF"):
         for user in message.mentions:
             userID = message.author.id
             auth = "<@%s>" % (userID)
@@ -243,14 +244,14 @@ async def on_message(message):
                                                                                                                              ":dancer:",
                                                                                                                              ":dancers:",]))
             
-    if message.content.upper().startswith("-DUEL"):
+    if message.content.upper().startswith(command_prefix + "DUEL"):
         for user in message.mentions:
             userID = message.author.id
             auth = "<@%s>" % (userID)
             msg = "challenges {}".format(user.mention)
             await client.send_message(message.channel, auth + " " + msg + "  "+ "to a d-d-d-d-d-duel" + ":fencer:")
             
-    if message.content.upper().startswith("-ASK MIKA"):
+    if message.content.upper().startswith(command_prefix + "ASK MIKA"):
             await client.send_message(message.channel, random.choice(["Maybe? idk. Now that I think about it, this thing may be broken. NEXT!:8ball:",
                                                                      "Certainly. :8ball:",
                                                                      "Yes. I'd even bet one of my 9 lives on it. :8ball:",
@@ -267,7 +268,7 @@ async def on_message(message):
                                                                      "Do you want my honest answer, or my nice answer? :8ball:",
                                                                      "Ask yourself! :8ball:",]))
             
-    if message.content.upper().startswith("-COIN"):
+    if message.content.upper().startswith(command_prefix + "COIN"):
          await client.send_message(message.channel, random.choice(["Heads",
                                                                      "Tails",
                                                                      "Heads",
@@ -314,7 +315,7 @@ async def on_message(message):
                                                                      "Heads",
                                                                      "Tails",
                                                                      "it landed on the side! :O!",]))
-    if message.content.upper().startswith("-WHAT SHOULD I DRAW"):
+    if message.content.upper().startswith(command_prefix + "WHAT SHOULD I DRAW"):
          await client.send_message(message.channel, ":paintbrush: " + random.choice(["A man",
                                                                      "a woman",
                                                                      "a teenager",
