@@ -20,6 +20,20 @@ command_prefix = "-"
 async def on_ready():
     print("MikaBot is ready to fight!")
     await client.change_presence(game=Game(name="with Angel<3 | -help"))
+       
+@client.event
+async def on_member_join(member):
+    server = member.server.default_channel
+    channel = member.server.get_channel("414767958947135500")
+    fmt = "***:man_dancing: Welcome to Discord Art Friends, {0.mention}!! Please read the #rules and come say hi! :man_dancing:***"
+    await client.send_message(channel, fmt.format(member, member.server))
+
+@client.event
+async def on_member_remove(member):
+    server = member.server.default_channel
+    channel = member.server.get_channel("414767958947135500")
+    fmt = "***:fencer:{0.mention} has left DAF. yikes. :fencer:***"
+    await client.send_message(channel, fmt.format(member, member.server))
     
               
 @client.event
