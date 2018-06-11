@@ -6,6 +6,7 @@ import time
 import random
 import os
 import json
+import praw
 from discord import Game
 
 
