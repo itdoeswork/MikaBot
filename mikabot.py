@@ -58,6 +58,7 @@ async def on_message(message):
         embed = discord.Embed(title="MikaBot", description="The cutest bot on discord! ^-^", color=0x7f1ae5)
         embed.add_field(name="Owner", value="angel#9928", inline=False)
         await client.send_message(message.channel, embed=embed)
+        
     if message.content.upper().startswith(command_prefix + "MIKA PIC"):
         reddit = praw.Reddit(client_id='3VJY49w5aP2XpQ',
                          client_secret='xcPKaFpEBuP2S5LAtJLONAy1M1A',
