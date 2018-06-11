@@ -185,7 +185,7 @@ async def on_message(message):
                                                                           "come at me bro :fencer:",
                                                                           "can you beat me in a dance competition? :man_dancing:",
                                                                           "you're not a worthy opponent.",
-                                                                          "IT'S TIME TO D-D-D-D-D-D-DUEL!:fencer:"
+                                                                          "IT'S TIME TO D-D-D-D-D-D-DUEL!:fencer:",
                                                                           "Sasuke? is that you?",
                                                                           "bring it! :fencer:",
                                                                           "While you were busy playing with bots, I studied the blade :fencer:",
