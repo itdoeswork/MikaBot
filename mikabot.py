@@ -15,6 +15,20 @@ client = commands.Bot(command_prefix = "-")
 command_prefix = "-"
 
 
+
+
+@client.event
+async def on_member_remove(member):
+    server = member.server.default_channel
+    channel = member.server.get_channel("452833600187138048")
+    fmt = "***:fencer:{0.mention} has left DAF. yikes. :fencer:***"
+    await client.send_message(channel, fmt.format(member, member.server))
+
+@client.event
+async def on_message_delete(message):
+    channel = member.server.get_channel("452833600187138048")
+    fmt = '{0.author.mention} has deleted the message:\n***{0.content}:bomb***'
+    await client.send_message(channel, fmt.format(message))
         
 @client.event
 async def on_ready():
