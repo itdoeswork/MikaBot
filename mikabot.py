@@ -119,36 +119,10 @@ async def on_message(message):
     
         
     if message.content.upper().startswith(command_prefix + "HELP"):
-        embed = discord.Embed(title="Hi I'm MikaBot! ^-^", description="These are my commands:", color=0x7f1ae5)
-        embed.add_field(name="-help", value="uh.. you should know what this does.. you just gave the command..", inline=False)
-        embed.add_field(name="-info", value="gives you basic info about me!", inline=False)
-        embed.add_field(name="-hello", value="Say hi to me!", inline=False)
-        embed.add_field(name="-bye", value="Say good bye!", inline=False)
-        embed.add_field(name="-night", value="Tell me good night!", inline=False)
-        embed.add_field(name="-morning", value="Tell me good morning!", inline=False)
-        embed.add_field(name="-hug @user", value="Hug someone! ^-^", inline=False)
-        embed.add_field(name="-secret hug @user", value="Hug someone secretly!", inline=False)
-        embed.add_field(name="-love @user", value="Declare your love!", inline=False)
-        embed.add_field(name="-secret love @user", value="Declare your love in secrecy, I won't tell ^-^", inline=False)
-        embed.add_field(name="-fight me", value="Challenge me to a fight", inline=False)
-        embed.add_field(name="-duel @user", value="Challenge someone else to a fight", inline=False)
-        embed.add_field(name="-dance off @user", value="If figting is not your style, challenge your opponent to a dance battle", inline=False)
-        embed.add_field(name="-shame @user", value="Shame someone!", inline=False)
-        embed.add_field(name="-say (message)", value="Get me to repeat your words!", inline=False)
-        embed.add_field(name="-add quote (message)", value="add a quote to The List of Quotes!", inline=False)
-        embed.add_field(name="-quote", value="Pull a random quote from The List of Quotes!", inline=False)
-        embed.add_field(name="-ask mika (message)", value="Ask me a question! I'm a psychic you know.", inline=False)
-        embed.add_field(name="-what should I draw", value="I'll give you a prompt", inline=False)
-        embed.add_field(name="-coin", value="Flip a coin!", inline=False)
-        embed.add_field(name="-ping", value="Pong?", inline=False)
-        embed.add_field(name="-does mika approve?", value="Does she??", inline=False)
-        embed.add_field(name="-pointless", value="Press The Pointless Button!", inline=False)
-        embed.add_field(name="-meme", value="I'll show you a meme", inline=False)
-        embed.add_field(name="-wholesome meme", value="I'll show you a *wholesome* meme", inline=False)
-        embed.add_field(name="-cute", value="I'll show you something cute", inline=False)
-        embed.add_field(name="-cat standing up", value="I'll show you a pic of a cat standing up", inline=False)
-        embed.add_field(name="-mika pic", value="I'll show you a pic of me", inline=False)
-        await client.send_message(message.author, embed=embed)
+        msg = "```Hi I'm MikaBot! ^-^. These are my commands:```  \n **-info** \n *Gives you basic info about the bot* \n \n \n `Greetings:` \n **-hello** \n *Say hi to me! ^-^*  \n **-bye** \n *Say goodbye to me!* \n **-morning** \n *Wish me good morning!* \n **-night** \n *Wish me good night!* \n \n \n `Love:` \n **-hug (@user)** \n *Hug someone!* \n **-secret hug (@user)** \n *Secretly hug someone!*\n **-love (@user)** \n *Declare your love!* \n **-secret love(@user)** \n *Declare your love secretly!* \n \n \n `Fight:` \n **-fight me** \n  *Challenge me to a fight!* \n **-duel (@user)** \n *Challenge someone else to a fight!* \n **-dance off(@user)** \n *Challenge someone to a dance battle!* \n **-shame (@user)** \n *Shame someone!* \n \n \n"
+        await client.send_message(message.author, msg)
+        msg2 = "`fun:` \n **-say (message)* \n *Get me to say something!* \n **-add quote (message)** \n *Add a quote to the list of quotes!* \n **-quote** \n *Get a random quote from the list of quotes!* \n *-*ask mika (message)** \n *Ask me a question! I am a psychic you know.* \n **-what should i draw** \n *Gives you a thing to draw!* \n \n \n `misc:` \n **-coin** \n *Flips a coin!* \n **-ping** \n *Pong!* \n **-does mika approve** \n *Does mika approve?* \n **-pointless** \n *Press the pointless button!* \n \n \n `Reddit` \n **-wholesome meme** \n *I will show you a meme* \n **-meme** \n *I will show you a WHOLESOME meme* \n **-cute** \n *I will show you something adorable* \n **cat standing up** \n *I will show you a cat standing up* \n **-mika pic** /n *I will show you a selfie ^-^*/n"
+        await client.send_message(message.author, msg2)
                                   
                                               
          
