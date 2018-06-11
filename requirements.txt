@@ -11,4 +11,4 @@ pyfiglet==0.7.5
 tokage==1.0.0
 pytz==2017.2
 PyGithub==1.3
-py-praw==3.5.0
+
