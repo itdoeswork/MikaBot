@@ -19,12 +19,12 @@ command_prefix = "-"
 
 @client.event
 async def on_message_delete(message):
-    fmt = '{0.author.mention} has deleted the message:\n***{0.content}'
+    fmt = '{0.author} has deleted the message:\n***{0.content}'
     await client.send_message(discord.Object(id='452833600187138048'), fmt.format(message))
     
 @client.event
 async def on_message_edit(before, after):
-    reply = ('**{0.author.mention}** has' + ' edited their message:\n'
+    reply = ('**{0.author}** has' + ' edited their message:\n'
                 '*{0.content}*\n'
                 '***→ {1.content}***')
     await client.send_message(discord.Object(id='452833600187138048'), reply.format(after, before))
