@@ -6,6 +6,7 @@ import time
 import random
 import os
 import json
+import praw
 from discord import Game
 
 
@@ -57,6 +58,62 @@ async def on_message(message):
         embed = discord.Embed(title="MikaBot", description="The cutest bot on discord! ^-^", color=0x7f1ae5)
         embed.add_field(name="Owner", value="angel#9928", inline=False)
         await client.send_message(message.channel, embed=embed)
+    if message.content.upper().startswith(command_prefix + "MIKA PIC"):
+        reddit = praw.Reddit(client_id='3VJY49w5aP2XpQ',
+                         client_secret='xcPKaFpEBuP2S5LAtJLONAy1M1A',
+                         user_agent='"MikaBot v1.0 (by /u/ourangelofsorrows)"')
+
+        memes_submissions = reddit.subreddit('mikabot').new()
+        post_to_pick = random.randint(1, 25)
+        for i in range(0, post_to_pick):
+            submission = next(x for x in memes_submissions if not x.stickied)
+        await client.send_message(message.channel, submission.url)
+        
+    if message.content.upper().startswith(command_prefix + "CAT STANDING UP"):
+        reddit = praw.Reddit(client_id='3VJY49w5aP2XpQ',
+                         client_secret='xcPKaFpEBuP2S5LAtJLONAy1M1A',
+                         user_agent='"MikaBot v1.0 (by /u/ourangelofsorrows)"')
+
+        memes_submissions = reddit.subreddit('catsstandingup').hot()
+        post_to_pick = random.randint(1, 100)
+        for i in range(0, post_to_pick):
+            submission = next(x for x in memes_submissions if not x.stickied)
+        await client.send_message(message.channel, submission.url)
+        
+    if message.content.upper().startswith(command_prefix + "CUTE"):
+        reddit = praw.Reddit(client_id='3VJY49w5aP2XpQ',
+                         client_secret='xcPKaFpEBuP2S5LAtJLONAy1M1A',
+                         user_agent='"MikaBot v1.0 (by /u/ourangelofsorrows)"')
+
+        memes_submissions = reddit.subreddit('aww').hot()
+        post_to_pick = random.randint(1, 100)
+        for i in range(0, post_to_pick):
+            submission = next(x for x in memes_submissions if not x.stickied)
+        await client.send_message(message.channel, submission.url)
+    
+
+    if message.content.upper().startswith(command_prefix + "WHOLESOME MEME"):
+        reddit = praw.Reddit(client_id='3VJY49w5aP2XpQ',
+                         client_secret='xcPKaFpEBuP2S5LAtJLONAy1M1A',
+                         user_agent='"MikaBot v1.0 (by /u/ourangelofsorrows)"')
+
+        memes_submissions = reddit.subreddit('wholesomememes').hot()
+        post_to_pick = random.randint(1, 100)
+        for i in range(0, post_to_pick):
+            submission = next(x for x in memes_submissions if not x.stickied)
+        await client.send_message(message.channel, submission.url)
+
+        
+    if message.content.upper().startswith(command_prefix + "MEME"):
+        reddit = praw.Reddit(client_id='3VJY49w5aP2XpQ',
+                         client_secret='xcPKaFpEBuP2S5LAtJLONAy1M1A',
+                         user_agent='"MikaBot v1.0 (by /u/ourangelofsorrows)"')
+
+        memes_submissions = reddit.subreddit('memes').hot()
+        post_to_pick = random.randint(1, 100)
+        for i in range(0, post_to_pick):
+            submission = next(x for x in memes_submissions if not x.stickied)
+        await client.send_message(message.channel, submission.url)
         
     if message.content.upper().startswith(command_prefix + "HELP"):
         embed = discord.Embed(title="Hi I'm MikaBot! ^-^", description="These are my commands:", color=0x7f1ae5)
@@ -83,6 +140,11 @@ async def on_message(message):
         embed.add_field(name="-ping", value="Pong?", inline=False)
         embed.add_field(name="-does mika approve?", value="Does she??", inline=False)
         embed.add_field(name="-pointless", value="Press The Pointless Button!", inline=False)
+        embed.add_field(name="-meme", value="I'll show you a meme", inline=False)
+        embed.add_field(name="-wholesome meme", value="I'll show you a *wholesome* meme", inline=False)
+        embed.add_field(name="-cute", value="I'll show you something cute", inline=False)
+        embed.add_field(name="-cat standing up", value="I'll show you a pic of a cat standing up", inline=False)
+        embed.add_field(name="-mika pic", value="I'll show you a pic of me", inline=False)
         await client.send_message(message.author, embed=embed)
                                   
                                               
