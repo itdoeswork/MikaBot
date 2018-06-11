@@ -20,14 +20,14 @@ command_prefix = "-"
 @client.event
 async def on_message_delete(message):
     fmt = ':bomb: {0.author.mention} has deleted the message:\n***{0.content}:bomb:***'
-    await client.send_message(client.get_channel('414767958947135500'), fmt.format(message))
+    await client.send_message(client.get_channel('452833600187138048'), fmt.format(message))
     
 @client.event
 async def on_message_edit(before, after):
     reply = ('**{0.author.mention}** has ' + ' edited their message:\n'
                 '**{0.content}**\n'
                 '***→ {1.content}***')
-    await client.send_message(client.get_channel('414767958947135500'), reply.format(after, before))
+    await client.send_message(client.get_channel('452833600187138048'), reply.format(after, before))
         
 @client.event
 async def on_ready():
