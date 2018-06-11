@@ -19,7 +19,7 @@ command_prefix = "-"
 
 @client.event
 async def on_message_delete(message):
-    fmt = ':bomb: {0.author.mention} has deleted the message:\n***{0.content}:bomb:***'
+    fmt = '{0.author.mention} has deleted the message:\n***{0.content}'
     await client.send_message(discord.Object(id='452833600187138048'), fmt.format(message))
     
 @client.event
