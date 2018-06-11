@@ -58,6 +58,63 @@ async def on_message(message):
         embed = discord.Embed(title="MikaBot", description="The cutest bot on discord! ^-^", color=0x7f1ae5)
         embed.add_field(name="Owner", value="angel#9928", inline=False)
         await client.send_message(message.channel, embed=embed)
+    
+    if message.content.upper().startswith(command_prefix + "MIKA PIC"):
+        reddit = praw.Reddit(client_id='3VJY49w5aP2XpQ',
+                         client_secret='xcPKaFpEBuP2S5LAtJLONAy1M1A',
+                         user_agent='"MikaBot v1.0 (by /u/ourangelofsorrows)"')
+
+        memes_submissions = reddit.subreddit('mikabot').new()
+        post_to_pick = random.randint(1, 25)
+        for i in range(0, post_to_pick):
+            submission = next(x for x in memes_submissions if not x.stickied)
+        await client.send_message(message.channel, submission.url)
+        
+    if message.content.upper().startswith(command_prefix + "CAT STANDING UP"):
+        reddit = praw.Reddit(client_id='3VJY49w5aP2XpQ',
+                         client_secret='xcPKaFpEBuP2S5LAtJLONAy1M1A',
+                         user_agent='"MikaBot v1.0 (by /u/ourangelofsorrows)"')
+
+        memes_submissions = reddit.subreddit('catsstandingup').hot()
+        post_to_pick = random.randint(1, 100)
+        for i in range(0, post_to_pick):
+            submission = next(x for x in memes_submissions if not x.stickied)
+        await client.send_message(message.channel, submission.url)
+        
+    if message.content.upper().startswith(command_prefix + "CUTE"):
+        reddit = praw.Reddit(client_id='3VJY49w5aP2XpQ',
+                         client_secret='xcPKaFpEBuP2S5LAtJLONAy1M1A',
+                         user_agent='"MikaBot v1.0 (by /u/ourangelofsorrows)"')
+
+        memes_submissions = reddit.subreddit('aww').hot()
+        post_to_pick = random.randint(1, 100)
+        for i in range(0, post_to_pick):
+            submission = next(x for x in memes_submissions if not x.stickied)
+        await client.send_message(message.channel, submission.url)
+    
+
+    if message.content.upper().startswith(command_prefix + "WHOLESOME MEME"):
+        reddit = praw.Reddit(client_id='3VJY49w5aP2XpQ',
+                         client_secret='xcPKaFpEBuP2S5LAtJLONAy1M1A',
+                         user_agent='"MikaBot v1.0 (by /u/ourangelofsorrows)"')
+
+        memes_submissions = reddit.subreddit('wholesomememes').hot()
+        post_to_pick = random.randint(1, 100)
+        for i in range(0, post_to_pick):
+            submission = next(x for x in memes_submissions if not x.stickied)
+        await client.send_message(message.channel, submission.url)
+
+        
+    if message.content.upper().startswith(command_prefix + "MEME"):
+        reddit = praw.Reddit(client_id='3VJY49w5aP2XpQ',
+                         client_secret='xcPKaFpEBuP2S5LAtJLONAy1M1A',
+                         user_agent='"MikaBot v1.0 (by /u/ourangelofsorrows)"')
+
+        memes_submissions = reddit.subreddit('memes').hot()
+        post_to_pick = random.randint(1, 100)
+        for i in range(0, post_to_pick):
+            submission = next(x for x in memes_submissions if not x.stickied)
+        await client.send_message(message.channel, submission.url)
         
     
         
