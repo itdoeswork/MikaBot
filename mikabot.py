@@ -143,7 +143,12 @@ async def on_message(message):
     
     if message.content.upper().startswith(command_prefix + "BRAIN"):
         if message.author.id == "150440931080798210":
-            await client.send_message(message.channel, "no brains for u hana.")
+            await client.send_message(message.channel, random.choice(["no brains for u hana.",
+                                                                     "okay fine, you can have .0005 brain",
+                                                                     "you zombie furry",
+                                                                     "fine hana, you get brained",
+                                                                     "nope, I'll brian you instead! Ha-Ha",
+                                                                     "no.",]))
         else:
             await client.send_message(message.channel, "{0.author.mention}".format(message) + " has been brained" )
         
