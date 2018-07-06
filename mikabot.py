@@ -46,14 +46,14 @@ async def on_member_join(member):
 async def on_member_remove(member):
     server = member.server.default_channel
     channel = member.server.get_channel("414767958947135500")
-    fmt = "***:fencer:{0.mention} has left DAF. yikes. :fencer:***"
+    fmt = "***:fencer:{0.user} has left DAF. yikes. :fencer:***"
     await client.send_message(channel, fmt.format(member, member.server))
-    
+
 @client.event
 async def on_member_ban(member):
     server = member.server.default_channel
     channel = member.server.get_channel("414767958947135500")
-    fmt = "***{0.mention} has been banned***"
+    fmt = "***{0.user} has been banned***"
     await client.send_message(channel, fmt.format(member, member.server))
     
 @client.event
@@ -130,7 +130,14 @@ async def on_message(message):
         msg2 = "`fun:` \n **-say (message)* \n *Get me to say something!* \n **-add quote (message)** \n *Add a quote to the list of quotes!* \n **-quote** \n *Get a random quote from the list of quotes!* \n *-*ask mika (message)** \n *Ask me a question! I am a psychic you know.* \n **-what should i draw** \n *Gives you a thing to draw!* \n \n \n `misc:` \n **-coin** \n *Flips a coin!* \n **-ping** \n *Pong!* \n **-does mika approve** \n *Does mika approve?* \n **-pointless** \n *Press the pointless button!* \n **-brain** \n *get brained* \n \n \n `Reddit` \n **-wholesome meme** \n *I will show you a meme* \n **-meme** \n *I will show you a WHOLESOME meme* \n **-cute** \n *I will show you something adorable* \n **cat standing up** \n *I will show you a cat standing up* \n **-mika pic** \n *I will show you a selfie ^-^* "
         await client.send_message(message.author, msg2)
                                   
-                                              
+    if message.content.upper().startswith('-VOTE'):
+        if "450624224399196161" in [role.id for role in message.author.roles]:
+            args = message.content.split(" ")
+            msg = await client.send_message(discord.Object(id='462949480816181271'), "%s" %(" ".join(args[1:])) + "\n \n *Vote using :thumbsup: or :thumbsdown:*")
+            res = await client.wait_for_reaction(['\U0001F44D','\U0001F44E'], message=msg)
+            await client.send_message(discord.Object(id='464747120197632021'), '{0.user} voted {0.reaction.emoji}!'.format(res))
+        else:
+            await client.send_message(message.channel, '{0.author.mention} only moderaters can start polls >.<"'.format(message))                                          
          
     if message.content.upper().startswith("I KIN MIKA"): 
          await client.send_message(message.author, "don't kin me. you furry.")
