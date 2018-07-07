@@ -8,7 +8,8 @@ import os
 import json
 import praw
 from discord import Game
-
+from discord import emoji
+import datetime
 
 
 Client = discord.Client()
@@ -20,7 +21,7 @@ command_prefix = "-"
 
 @client.event
 async def on_message_delete(message):
-    fmt = '{0.author} has deleted the message:\n***{0.content}'
+    fmt = '{0.author} has deleted the message:\n ***{0.content}***'
     await client.send_message(discord.Object(id='452833600187138048'), fmt.format(message))
     
 @client.event
@@ -43,18 +44,17 @@ async def on_member_join(member):
     await client.send_message(channel, fmt.format(member, member.server))
 
 @client.event
-async def on_member_remove(member):
-    server = member.server.default_channel
-    channel = member.server.get_channel("414767958947135500")
-    fmt = "***:fencer:{0.user} has left DAF. yikes. :fencer:***"
-    await client.send_message(channel, fmt.format(member, member.server))
+async def on_member_ban(member):
+    msg = "{} Has been banned. DM a mod for mote info ^-^.".format(member.name)
+    print(msg)
+    await client.send_message(client.get_channel('414767958947135500'), msg)
 
 @client.event
-async def on_member_ban(member):
-    server = member.server.default_channel
-    channel = member.server.get_channel("414767958947135500")
-    fmt = "***{0.user} has been banned***"
-    await client.send_message(channel, fmt.format(member, member.server))
+async def on_member_remove(member):
+    since_joined = (datetime.datetime.now() - member.joined_at).days
+    msg = "Our friend {} has left DAF :fencer:. they had only been with us {} days.".format(member.name, since_joined)
+    print(msg)
+    await client.send_message(client.get_channel('414767958947135500'), msg)
     
 @client.event
 async def on_message(message):   
