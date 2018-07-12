@@ -16,25 +16,31 @@ Client = discord.Client()
 client = commands.Bot(command_prefix = "-")
 command_prefix = "-"
 
-
-
-
-@client.event
-async def on_message_delete(message):
-    fmt = '{0.author} has deleted the message:\n ***{0.content}***'
-    await client.send_message(discord.Object(id='452833600187138048'), fmt.format(message))
-    
-@client.event
-async def on_message_edit(before, after):
-    reply = ('**{0.author}** has' + ' edited their message:\n'
-                '*{0.content}*\n'
-                '→ ***{1.content}***')
-    await client.send_message(discord.Object(id='452833600187138048'), reply.format(after, before))
-        
 @client.event
 async def on_ready():
     print("MikaBot is ready to fight!")
     await client.change_presence(game=Game(name="with Angel<3 | -help"))
+
+
+@client.event
+async def on_message_delete(message):
+    if message.author == client.user:
+        return
+    else:
+        fmt = '{0.author} has deleted the message:\n ***{0.content}***'
+        await client.send_message(discord.Object(id='452833600187138048'), fmt.format(message))
+    
+@client.event
+async def on_message_edit(before, after):
+    if message.author == client.user:
+        return
+    else:
+        reply = ('**{0.author}** has' + ' edited their message:\n'
+                    '*{0.content}*\n'
+                    '→ ***{1.content}***')
+        await client.send_message(discord.Object(id='452833600187138048'), reply.format(after, before))
+        
+
        
 @client.event
 async def on_member_join(member):
@@ -71,7 +77,7 @@ async def on_message(message):
                          user_agent='"MikaBot v1.0 (by /u/ourangelofsorrows)"')
 
         memes_submissions = reddit.subreddit('mikabot').new()
-        post_to_pick = random.randint(1, 25)
+        post_to_pick = random.randint(1, 50)
         for i in range(0, post_to_pick):
             submission = next(x for x in memes_submissions if not x.stickied)
         await client.send_message(message.channel, submission.url)
@@ -133,11 +139,9 @@ async def on_message(message):
     if message.content.upper().startswith('-VOTE'):
         if "450624224399196161" in [role.id for role in message.author.roles]:
             args = message.content.split(" ")
-            msg = await client.send_message(discord.Object(id='462949480816181271'), "%s" %(" ".join(args[1:])) + "\n \n *Vote using :thumbsup: or :thumbsdown:*")
-            res = await client.wait_for_reaction(['\U0001F44D','\U0001F44E'], message=msg)
-            await client.send_message(discord.Object(id='464747120197632021'), '{0.user} voted {0.reaction.emoji}!'.format(res))
+            await client.send_message(discord.Object(id='462949480816181271'), "%s" %(" ".join(args[1:])) + "\n \n *Vote using :thumbsup: or :thumbsdown:*")
         else:
-            await client.send_message(message.channel, '{0.author.mention} only moderaters can start polls >.<"'.format(message))                                          
+            await client.send_message(message.channel, '{0.author.mention} only moderaters can start polls >.<"'.format(message))                                        
          
     if message.content.upper().startswith("I KIN MIKA"): 
          await client.send_message(message.author, "don't kin me. you furry.")
