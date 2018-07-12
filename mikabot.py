@@ -24,17 +24,11 @@ async def on_ready():
 
 @client.event
 async def on_message_delete(message):
-    if message.author == client.user:
-        return
-    else:
         fmt = '{0.author} has deleted the message:\n ***{0.content}***'
         await client.send_message(discord.Object(id='452833600187138048'), fmt.format(message))
     
 @client.event
 async def on_message_edit(before, after):
-    if message.author == client.user:
-        return
-    else:
         reply = ('**{0.author}** has' + ' edited their message:\n'
                     '*{0.content}*\n'
                     '→ ***{1.content}***')
