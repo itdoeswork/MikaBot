@@ -21,7 +21,15 @@ async def on_ready():
     print("MikaBot is ready to fight!")
     await client.change_presence(game=Game(name="with Angel<3 | -help"))
 
-
+@client.event
+async def on_reaction_add(reaction, user):
+    if reaction.emoji == '\U0001F57A':
+        if reaction.count == 3:
+            msg = ("\U0001F57A " + reaction.message.author.display_name + " has been invited to dance in " + reaction.message.channel.name + " \U0001F57A")
+            msg2 = '*"' + reaction.message.content + '"*'
+            embed = discord.Embed(title= msg, description= msg2, color=0x7f1ae5)
+            await client.send_message(discord.Object(id='467308553644933121'), embed=embed)
+    
 @client.event
 async def on_message_delete(message):
         fmt = '{0.author} has deleted the message:\n ***{0.content}***'
