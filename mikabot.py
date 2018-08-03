@@ -58,13 +58,13 @@ async def on_ready():
 @client.event
 async def on_reaction_add(reaction, user):
     if reaction.emoji == DANCER_EMOJI:
-        if (reaction.count == 2) and (not await message_starred(client, DANCE_ROOM_CHANNEL_ID, reaction.message.id)):
+        if (reaction.count == 3) and (not await message_starred(client, DANCE_ROOM_CHANNEL_ID, reaction.message.id)):
             msg = ("\U0001F57A " + reaction.message.author.display_name + " has been invited to dance in " + reaction.message.channel.name + " \U0001F57A")
             msg2 = '*"' + reaction.message.content + '"*'
             embed = discord.Embed(title= msg, description= msg2, color=0x7f1ae5)
             await client.send_message(discord.Object(id=DANCE_ROOM_CHANNEL_ID), "*MessageID: {id}*".format(id=reaction.message.id), embed=embed)
     if reaction.emoji == FENCER_EMOJI:
-        if (reaction.count == 2) and (not await message_starred(client, FENCE_ROOM_CHANNEL_ID, reaction.message.id)):
+        if (reaction.count == 3) and (not await message_starred(client, FENCE_ROOM_CHANNEL_ID, reaction.message.id)):
             msg = ("\U0001F93A " + reaction.message.author.display_name + " has been eternally shamed from " + reaction.message.channel.name + " \U0001F93A")
             msg2 = '*"' + reaction.message.content + '"*'
             embed = discord.Embed(title= msg, description= msg2, color=0x7f1ae5)
