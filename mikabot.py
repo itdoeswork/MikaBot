@@ -22,6 +22,7 @@ ADMIN_CHANNEL_ID =       '452833600187138048'          #'474939881131343874'    
 USER_LOG_CHANNEL_ID =    '414767958947135500'          #'474939868057698305'         #'414767958947135500' 
 DANCE_ROOM_CHANNEL_ID =  '467308553644933121'          #'474939794737070101'         #'467308553644933121'
 FENCE_ROOM_CHANNEL_ID =  '474946702411956224'          #'474939781940379648'         #'474946702411956224' 
+QUOTE_CHANNEL_ID =       '475042987051581460'          #'475057158707347466'         #'475042987051581460'
 
 async def message_starred(client, channel_id, test_message_id):
     channel = client.get_channel(channel_id)
@@ -30,6 +31,25 @@ async def message_starred(client, channel_id, test_message_id):
                 return  True
     return False
 
+
+async def get_quote(client, channel_id):
+    channel = client.get_channel(channel_id)
+    ret = []
+    async for message in client.logs_from(channel, limit=1000):
+        ret.append(message)
+    return random.choice(ret)
+
+async def send_quote(client, channel, quote):
+    print(quote.embeds)
+    print(quote.embeds[0])
+    await client.send_message(channel, embed=discord.Embed(**quote.embeds[0]))
+
+async def submit_quote(client, channel_id, message, author):
+    channel = client.get_channel(channel_id)
+    #"<:mika:475061308308586527>"
+    embed = discord.Embed(title= "{mika} {message} {mika}".format(mika="\U0001F432", message=message), description= "*Submitted By: {author}*".format(author=author), color=0x7f1ae5)
+    await client.send_message(discord.Object(id=channel_id), embed=embed)
+   
 @client.event
 async def on_ready():
     print("MikaBot is ready to fight!")
@@ -62,9 +82,7 @@ async def on_message_edit(before, after):
                     '*{0.content}*\n'
                     '→ ***{1.content}***')
         await client.send_message(discord.Object(id=ADMIN_CHANNEL_ID), reply.format(after, before))
-        
-
-       
+           
 @client.event
 async def on_member_join(member):
     server = member.server.default_channel
@@ -266,18 +284,12 @@ async def on_message(message):
             await client.send_message(message.channel, "you are NOT Mikapproved yet! >.<'")
         
     if message.content.upper().startswith(command_prefix + "ADD QUOTE"):
-        if not os.path.isfile("quote_file.pk1"):
-            quote_list = []
-        else:
-            with open("quote_file.pk1", "r") as quote_file:
-                quote_list = json.load(quote_file)
-        quote_list.append(message.content[10:])
-        with open("quote_file.pk1", "w") as quote_file:
-                json.dump(quote_list , quote_file)
+        await submit_quote(client, QUOTE_CHANNEL_ID, message.content[10:], message.author.name)
+    
     if message.content.upper().startswith(command_prefix + "QUOTE"):
-        with open("quote_file.pk1", "r") as quote_file:
-            quote_list = json.load(quote_file)
-        await client.send_message(message.channel, random.choice(quote_list))
+        quote =  await get_quote(client, QUOTE_CHANNEL_ID)
+        await send_quote(client, message.channel, quote)
+    
     if message.content.upper().startswith(command_prefix + "SHAME"):
         for user in message.mentions:
             userID = message.author.id
