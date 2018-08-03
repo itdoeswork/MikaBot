@@ -32,7 +32,7 @@ async def on_reaction_add(reaction, user):
     
 @client.event
 async def on_message_delete(message):
-        fmt = '{0.author} has deleted the message:\n ***{0.content}***'
+        fmt = 'message by {0.author} has been deleted:\n ***{0.content}***'
         await client.send_message(discord.Object(id='452833600187138048'), fmt.format(message))
     
 @client.event
@@ -53,7 +53,7 @@ async def on_member_join(member):
 
 @client.event
 async def on_member_ban(member):
-    msg = "{} Has been banned. DM a mod for mote info ^-^.".format(member.name)
+    msg = "{} Has been banned. DM a mod for more info ^-^.".format(member.name)
     print(msg)
     await client.send_message(client.get_channel('414767958947135500'), msg)
 
