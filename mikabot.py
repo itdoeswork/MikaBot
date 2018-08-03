@@ -53,8 +53,13 @@ async def on_reaction_add(reaction, user):
     
 @client.event
 async def on_message_delete(message):
+<<<<<<< HEAD
         fmt = '{0.author} has deleted the message:\n ***{0.content}***'
         await client.send_message(discord.Object(id=ADMIN_CHANNEL_ID), fmt.format(message))
+=======
+        fmt = 'message by {0.author} has been deleted:\n ***{0.content}***'
+        await client.send_message(discord.Object(id='452833600187138048'), fmt.format(message))
+>>>>>>> 30d3f0ccbd3611e014e5fe4355cb931a7466186a
     
 @client.event
 async def on_message_edit(before, after):
@@ -74,7 +79,7 @@ async def on_member_join(member):
 
 @client.event
 async def on_member_ban(member):
-    msg = "{} Has been banned. DM a mod for mote info ^-^.".format(member.name)
+    msg = "{} Has been banned. DM a mod for more info ^-^.".format(member.name)
     print(msg)
     await client.send_message(client.get_channel(USER_LOG_CHANNEL_ID), msg)
 
