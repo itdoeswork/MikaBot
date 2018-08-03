@@ -16,6 +16,20 @@ Client = discord.Client()
 client = commands.Bot(command_prefix = "-")
 command_prefix = "-"
 
+FENCER_EMOJI = "\U0001F93A"
+DANCER_EMOJI = "\U0001F57A"                            #Test Server                  #Real Server     
+ADMIN_CHANNEL_ID =       '452833600187138048'          #'474939881131343874'         #'452833600187138048'
+USER_LOG_CHANNEL_ID =    '414767958947135500'          #'474939868057698305'         #'414767958947135500' 
+DANCE_ROOM_CHANNEL_ID =  '467308553644933121'          #'474939794737070101'         #'467308553644933121'
+FENCE_ROOM_CHANNEL_ID =  '474946702411956224'          #'474939781940379648'         #'474946702411956224' 
+
+async def message_starred(client, channel_id, test_message_id):
+    channel = client.get_channel(channel_id)
+    async for message in client.logs_from(channel, limit=500):
+        if message.content.startswith('*MessageID: {id}*'.format(id = test_message_id)):
+                return  True
+    return False
+
 @client.event
 async def on_ready():
     print("MikaBot is ready to fight!")
@@ -23,31 +37,38 @@ async def on_ready():
 
 @client.event
 async def on_reaction_add(reaction, user):
-    if reaction.emoji == '\U0001F57A':
-        if reaction.count == 3:
+    if reaction.emoji == DANCER_EMOJI:
+        if (reaction.count == 2) and (not await message_starred(client, DANCE_ROOM_CHANNEL_ID, reaction.message.id)):
             msg = ("\U0001F57A " + reaction.message.author.display_name + " has been invited to dance in " + reaction.message.channel.name + " \U0001F57A")
             msg2 = '*"' + reaction.message.content + '"*'
             embed = discord.Embed(title= msg, description= msg2, color=0x7f1ae5)
-            await client.send_message(discord.Object(id='467308553644933121'), embed=embed)
+            await client.send_message(discord.Object(id=DANCE_ROOM_CHANNEL_ID), "*MessageID: {id}*".format(id=reaction.message.id), embed=embed)
+    if reaction.emoji == FENCER_EMOJI:
+        if (reaction.count == 2) and (not await message_starred(client, FENCE_ROOM_CHANNEL_ID, reaction.message.id)):
+            msg = ("\U0001F93A " + reaction.message.author.display_name + " has been eternally shamed from " + reaction.message.channel.name + " \U0001F93A")
+            msg2 = '*"' + reaction.message.content + '"*'
+            embed = discord.Embed(title= msg, description= msg2, color=0x7f1ae5)
+            await client.send_message(discord.Object(id=FENCE_ROOM_CHANNEL_ID), "*MessageID: {id}*".format(id=reaction.message.id), embed=embed)
+    
     
 @client.event
 async def on_message_delete(message):
         fmt = '{0.author} has deleted the message:\n ***{0.content}***'
-        await client.send_message(discord.Object(id='452833600187138048'), fmt.format(message))
+        await client.send_message(discord.Object(id=ADMIN_CHANNEL_ID), fmt.format(message))
     
 @client.event
 async def on_message_edit(before, after):
         reply = ('**{0.author}** has' + ' edited their message:\n'
                     '*{0.content}*\n'
                     '→ ***{1.content}***')
-        await client.send_message(discord.Object(id='452833600187138048'), reply.format(after, before))
+        await client.send_message(discord.Object(id=ADMIN_CHANNEL_ID), reply.format(after, before))
         
 
        
 @client.event
 async def on_member_join(member):
     server = member.server.default_channel
-    channel = member.server.get_channel("414767958947135500")
+    channel = member.server.get_channel(USER_LOG_CHANNEL_ID)
     fmt = "***:man_dancing: Welcome to Discord Art Friends, {0.mention}!! Please read the #rules and come say hi! :man_dancing:***"
     await client.send_message(channel, fmt.format(member, member.server))
 
@@ -55,14 +76,14 @@ async def on_member_join(member):
 async def on_member_ban(member):
     msg = "{} Has been banned. DM a mod for mote info ^-^.".format(member.name)
     print(msg)
-    await client.send_message(client.get_channel('414767958947135500'), msg)
+    await client.send_message(client.get_channel(USER_LOG_CHANNEL_ID), msg)
 
 @client.event
 async def on_member_remove(member):
     since_joined = (datetime.datetime.now() - member.joined_at).days
     msg = "Our friend {} has left DAF :fencer:. they had only been with us {} days.".format(member.name, since_joined)
     print(msg)
-    await client.send_message(client.get_channel('414767958947135500'), msg)
+    await client.send_message(client.get_channel(USER_LOG_CHANNEL_ID), msg)
     
 @client.event
 async def on_message(message):   
@@ -138,7 +159,7 @@ async def on_message(message):
         msg2 = "`fun:` \n **-say (message)* \n *Get me to say something!* \n **-add quote (message)** \n *Add a quote to the list of quotes!* \n **-quote** \n *Get a random quote from the list of quotes!* \n *-*ask mika (message)** \n *Ask me a question! I am a psychic you know.* \n **-what should i draw** \n *Gives you a thing to draw!* \n \n \n `misc:` \n **-coin** \n *Flips a coin!* \n **-ping** \n *Pong!* \n **-does mika approve** \n *Does mika approve?* \n **-pointless** \n *Press the pointless button!* \n **-brain** \n *get brained* \n \n \n `Reddit` \n **-wholesome meme** \n *I will show you a meme* \n **-meme** \n *I will show you a WHOLESOME meme* \n **-cute** \n *I will show you something adorable* \n **cat standing up** \n *I will show you a cat standing up* \n **-mika pic** \n *I will show you a selfie ^-^* "
         await client.send_message(message.author, msg2)
                                   
-    if message.content.upper().startswith('-VOTE'):
+    if message.content.upper().startswith(command_prefix + 'VOTE'):
         if "450624224399196161" in [role.id for role in message.author.roles]:
             args = message.content.split(" ")
             await client.send_message(discord.Object(id='462949480816181271'), "%s" %(" ".join(args[1:])) + "\n \n *Vote using :thumbsup: or :thumbsdown:*")
