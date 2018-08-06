@@ -94,7 +94,8 @@ async def send_quote(client, channel, quote):
     embed =  discord.Embed(**quote.embeds[0])
     for i in quote.attachments:
         set_embed_image(embed, i)
-    set_embed_image(embed, quote.embeds[0]["image"])
+    if("image" in quote.embeds[0].keys()):
+    	set_embed_image(embed, quote.embeds[0]["image"])
     await client.send_message(channel, embed=embed)
 
 async def submit_quote(client, channel_id, message, message_embeds, message_attachments, author):
