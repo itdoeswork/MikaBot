@@ -113,7 +113,7 @@ async def on_ready():
 async def on_reaction_add(reaction, user):
     if reaction.emoji == DANCER_EMOJI:
         print(reaction.message.attachments)
-        if (reaction.count == 1) and (not await message_starred(client, DANCE_ROOM_CHANNEL_ID, reaction.message.id)):
+        if (reaction.count == 3) and (not await message_starred(client, DANCE_ROOM_CHANNEL_ID, reaction.message.id)):
             msg = ("\U0001F57A " + reaction.message.author.display_name + " has been invited to dance in " + reaction.message.channel.name + " \U0001F57A")
             msg2 = '*"' + reaction.message.content + '"*' if len(reaction.message.content) > 0 else ""
             message_embeds = reaction.message.embeds
@@ -122,7 +122,7 @@ async def on_reaction_add(reaction, user):
             result_embed = await merge_embeds(embed, message_embeds, message_attachments)
             await client.send_message(discord.Object(id=DANCE_ROOM_CHANNEL_ID), "*MessageID: {id}*".format(id=reaction.message.id), embed=result_embed)
     if reaction.emoji == FENCER_EMOJI:
-        if (reaction.count == 1) and (not await message_starred(client, FENCE_ROOM_CHANNEL_ID, reaction.message.id)):
+        if (reaction.count == 3) and (not await message_starred(client, FENCE_ROOM_CHANNEL_ID, reaction.message.id)):
             msg = ("\U0001F93A " + reaction.message.author.display_name + " has been eternally shamed from " + reaction.message.channel.name + " \U0001F93A")
             msg2 = '*"' + reaction.message.content + '"*' if len(reaction.message.content) > 0 else ""
             message_embeds = reaction.message.embeds
