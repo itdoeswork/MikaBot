@@ -58,17 +58,17 @@ async def merge_embeds(target_embed, message_embed_dict_list, message_attachment
 		embed_dict = dict()
 		if(len(message_embed_dict_list) > 0 and len(message_attachments) > 0):
 			embed_dict = message_embed_dict_list[0]
-			embed_dict["description"] = """{des}\n---\n```** {em_title} **\n{em_des}```\n{urls}""".format(
+			embed_dict["description"] = """{des}\n---\n** {em_title} **\n{em_des}\n---\n{urls}""".format(
 				des=target_embed.description,
 				urls=get_urls(message_attachments),
-				em_title=get_embedded_bold_sub(embeded_dict["title"]),
-				em_des=get_embeded_bold_sub(embeded_dict["description"]))
+				em_title=get_embedded_bold_sub(embed_dict["title"]),
+				em_des=get_embedded_bold_sub(embed_dict["description"]))
 		elif(len(message_embed_dict_list) > 0):
 			embed_dict = message_embed_dict_list[0]
-			embed_dict["description"] = """{des}\n---\n```** {em_title} **\n{em_des}```""".format(
+			embed_dict["description"] = """{des}\n---\n** {em_title} **\n{em_des}\n---""".format(
 				des=target_embed.description,
-				em_title=get_embedded_bold_sub(embeded_dict["title"]),
-				em_des=get_embeded_bold_sub(embeded_dict["description"]))
+				em_title=get_embedded_bold_sub(embed_dict["title"]),
+				em_des=get_embedded_bold_sub(embed_dict["description"]))
 		elif(len(message_attachments) > 0):
 			embed_dict["description"] = """{des}\n{urls}""".format(des=target_embed.description, urls=get_urls(message_attachments))
 	
@@ -76,6 +76,8 @@ async def merge_embeds(target_embed, message_embed_dict_list, message_attachment
 		ret = discord.Embed(**embed_dict)
 		for i in message_attachments:
 			set_embed_image(ret, i)
+		if("image" in embed_dict):
+			set_embed_image(ret, embed_dict["image"])
 		return ret
 	else:
 		return target_embed
