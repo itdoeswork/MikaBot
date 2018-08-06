@@ -5,6 +5,7 @@ import asyncio
 import time
 import random
 import os
+import re
 import json
 import praw
 from discord import Game
@@ -31,6 +32,53 @@ async def message_starred(client, channel_id, test_message_id):
                 return  True
     return False
 
+def is_image_extension(p):
+	ext = p.split(".")[-1]
+	return ext.upper() in ['JFIF', 'JPEG', 'JPG','EXIF','TIFF','GIF',
+	'BMP','PNG','PPM', 'PGM', 'PBM', 'PNM','WEBP','HDR','HEIF','BAT']
+
+def set_embed_image(embed, attachment):
+	if(is_image_extension(attachment["url"])):
+		embed.set_image(url=attachment["url"])
+		return True
+	return False
+
+
+async def merge_embeds(target_embed, message_embed_dict_list, message_attachments):
+	def get_embedded_bold_sub(s):
+		s_subbed = re.sub("""[*][*][*](.*?)[*][*][*]""", r"""\*\* *\1* \*\*""",s)
+		s_resubbed = re.sub("""[*][*](.*?)[*][*]""", r"""\*\* \1 \*\*""", s_subbed)
+		return s_resubbed
+	
+	def get_urls(m):
+		return "\n".join([i["url"] for i in m])
+	
+
+	if(len(message_embed_dict_list) > 0 or len(message_attachments) > 0):
+		embed_dict = dict()
+		if(len(message_embed_dict_list) > 0 and len(message_attachments) > 0):
+			embed_dict = message_embed_dict_list[0]
+			embed_dict["description"] = """{des}\n---\n```** {em_title} **\n{em_des}```\n{urls}""".format(
+				des=target_embed.description,
+				urls=get_urls(message_attachments),
+				em_title=get_embedded_bold_sub(embeded_dict["title"]),
+				em_des=get_embeded_bold_sub(embeded_dict["description"]))
+		elif(len(message_embed_dict_list) > 0):
+			embed_dict = message_embed_dict_list[0]
+			embed_dict["description"] = """{des}\n---\n```** {em_title} **\n{em_des}```""".format(
+				des=target_embed.description,
+				em_title=get_embedded_bold_sub(embeded_dict["title"]),
+				em_des=get_embeded_bold_sub(embeded_dict["description"]))
+		elif(len(message_attachments) > 0):
+			embed_dict["description"] = """{des}\n{urls}""".format(des=target_embed.description, urls=get_urls(message_attachments))
+	
+		embed_dict["title"] = target_embed.title
+		ret = discord.Embed(**embed_dict)
+		for i in message_attachments:
+			set_embed_image(ret, i)
+		return ret
+	else:
+		return target_embed
 
 async def get_quote(client, channel_id):
     channel = client.get_channel(channel_id)
@@ -40,15 +88,21 @@ async def get_quote(client, channel_id):
     return random.choice(ret)
 
 async def send_quote(client, channel, quote):
+    print(quote)
     print(quote.embeds)
-    print(quote.embeds[0])
-    await client.send_message(channel, embed=discord.Embed(**quote.embeds[0]))
+    print(quote.attachments)
+    embed =  discord.Embed(**quote.embeds[0])
+    for i in quote.attachments:
+        set_embed_image(embed, i)
+    set_embed_image(embed, quote.embeds[0]["image"])
+    await client.send_message(channel, embed=embed)
 
-async def submit_quote(client, channel_id, message, author):
+async def submit_quote(client, channel_id, message, message_embeds, message_attachments, author):
     channel = client.get_channel(channel_id)
     #"<:mika:475061308308586527>"
     embed = discord.Embed(title= "{mika} {message} {mika}".format(mika="\U0001F432", message=message), description= "*Submitted By: {author}*".format(author=author), color=0x7f1ae5)
-    await client.send_message(discord.Object(id=channel_id), embed=embed)
+    result_embed = await merge_embeds(embed, message_embeds, message_attachments)
+    await client.send_message(discord.Object(id=channel_id), embed=result_embed)
    
 @client.event
 async def on_ready():
@@ -58,17 +112,24 @@ async def on_ready():
 @client.event
 async def on_reaction_add(reaction, user):
     if reaction.emoji == DANCER_EMOJI:
-        if (reaction.count == 3) and (not await message_starred(client, DANCE_ROOM_CHANNEL_ID, reaction.message.id)):
+        print(reaction.message.attachments)
+        if (reaction.count == 1) and (not await message_starred(client, DANCE_ROOM_CHANNEL_ID, reaction.message.id)):
             msg = ("\U0001F57A " + reaction.message.author.display_name + " has been invited to dance in " + reaction.message.channel.name + " \U0001F57A")
-            msg2 = '*"' + reaction.message.content + '"*'
+            msg2 = '*"' + reaction.message.content + '"*' if len(reaction.message.content) > 0 else ""
+            message_embeds = reaction.message.embeds
+            message_attachments = reaction.message.attachments
             embed = discord.Embed(title= msg, description= msg2, color=0x7f1ae5)
-            await client.send_message(discord.Object(id=DANCE_ROOM_CHANNEL_ID), "*MessageID: {id}*".format(id=reaction.message.id), embed=embed)
+            result_embed = await merge_embeds(embed, message_embeds, message_attachments)
+            await client.send_message(discord.Object(id=DANCE_ROOM_CHANNEL_ID), "*MessageID: {id}*".format(id=reaction.message.id), embed=result_embed)
     if reaction.emoji == FENCER_EMOJI:
-        if (reaction.count == 3) and (not await message_starred(client, FENCE_ROOM_CHANNEL_ID, reaction.message.id)):
+        if (reaction.count == 1) and (not await message_starred(client, FENCE_ROOM_CHANNEL_ID, reaction.message.id)):
             msg = ("\U0001F93A " + reaction.message.author.display_name + " has been eternally shamed from " + reaction.message.channel.name + " \U0001F93A")
-            msg2 = '*"' + reaction.message.content + '"*'
+            msg2 = '*"' + reaction.message.content + '"*' if len(reaction.message.content) > 0 else ""
+            message_embeds = reaction.message.embeds
+            message_attachments = reaction.message.attachments
             embed = discord.Embed(title= msg, description= msg2, color=0x7f1ae5)
-            await client.send_message(discord.Object(id=FENCE_ROOM_CHANNEL_ID), "*MessageID: {id}*".format(id=reaction.message.id), embed=embed)
+            result_embed = await merge_embeds(embed, message_embeds, message_attachments)
+            await client.send_message(discord.Object(id=FENCE_ROOM_CHANNEL_ID), "*MessageID: {id}*".format(id=reaction.message.id), embed=result_embed)
     
     
 @client.event
@@ -284,7 +345,7 @@ async def on_message(message):
             await client.send_message(message.channel, "you are NOT Mikapproved yet! >.<'")
         
     if message.content.upper().startswith(command_prefix + "ADD QUOTE"):
-        await submit_quote(client, QUOTE_CHANNEL_ID, message.content[10:], message.author.name)
+        await submit_quote(client, QUOTE_CHANNEL_ID, message.content[10:], message.embeds, message.attachments, message.author.name)
         await client.send_message(message.channel, "Your quote has been added to the list!")
     
     if message.content.upper().startswith(command_prefix + "QUOTE"):
