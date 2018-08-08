@@ -24,14 +24,17 @@ USER_LOG_CHANNEL_ID =    '414767958947135500'   	       #'474939868057698305'   
 DANCE_ROOM_CHANNEL_ID =  '467308553644933121'   	       #'474939794737070101'         #'467308553644933121'
 FENCE_ROOM_CHANNEL_ID =  '474946702411956224'   	       #'474939781940379648'         #'474946702411956224' 
 QUOTE_CHANNEL_ID =       '475042987051581460'   	       #'475057158707347466'         #'475042987051581460'
+REACTION_REQUIREMENT = 3
 
 if('MIKABOT_TEST' in os.environ and os.environ['MIKABOT_TEST'].upper() == "TRUE"):			
-	print("Launching in test mode...")
-	ADMIN_CHANNEL_ID =       '474939881131343874'          #'474939881131343874'         #'452833600187138048'
-	USER_LOG_CHANNEL_ID =    '474939868057698305'          #'474939868057698305'         #'414767958947135500' 
-	DANCE_ROOM_CHANNEL_ID =  '474939794737070101'          #'474939794737070101'         #'467308553644933121'
-	FENCE_ROOM_CHANNEL_ID =  '474939781940379648'          #'474939781940379648'         #'474946702411956224' 
-	QUOTE_CHANNEL_ID =       '475057158707347466'          #'475057158707347466'         #'475042987051581460'
+        print("Launching in test mode...")
+        REACTION_REQUIREMENT = 1
+        ADMIN_CHANNEL_ID =       '474939881131343874'          #'474939881131343874'         #'452833600187138048'
+        USER_LOG_CHANNEL_ID =    '474939868057698305'          #'474939868057698305'         #'414767958947135500' 
+        DANCE_ROOM_CHANNEL_ID =  '474939794737070101'          #'474939794737070101'         #'467308553644933121'
+        FENCE_ROOM_CHANNEL_ID =  '474939781940379648'          #'474939781940379648'         #'474946702411956224' 
+        QUOTE_CHANNEL_ID =       '475057158707347466'          #'475057158707347466'         #'475042987051581460'
+
 
 
 
@@ -166,7 +169,7 @@ async def on_ready():
 async def on_reaction_add(reaction, user):
     if reaction.emoji == DANCER_EMOJI:
         print(reaction.message.attachments)
-        if (reaction.count == 3) and (not await message_starred(client, DANCE_ROOM_CHANNEL_ID, reaction.message.id)):
+        if (reaction.count == REACTION_REQUIREMENT) and (not await message_starred(client, DANCE_ROOM_CHANNEL_ID, reaction.message.id)):
             msg = ("\U0001F57A " + reaction.message.author.display_name + " has been invited to dance in " + reaction.message.channel.name + " \U0001F57A")
             message_content = await resolve_mentions_to_friendly_names(client, reaction.message.server.id, 
                 reaction.message.content, reaction.message.mentions, 
@@ -178,7 +181,7 @@ async def on_reaction_add(reaction, user):
             result_embed = await merge_embeds(embed, message_embeds, message_attachments)
             await client.send_message(discord.Object(id=DANCE_ROOM_CHANNEL_ID), "*MessageID: {id}*".format(id=reaction.message.id), embed=result_embed)
     if reaction.emoji == FENCER_EMOJI:
-        if (reaction.count == 3) and (not await message_starred(client, FENCE_ROOM_CHANNEL_ID, reaction.message.id)):
+        if (reaction.count == REACTION_REQUIREMENT) and (not await message_starred(client, FENCE_ROOM_CHANNEL_ID, reaction.message.id)):
             msg = ("\U0001F93A " + reaction.message.author.display_name + " has been eternally shamed from " + reaction.message.channel.name + " \U0001F93A")
             message_content = await resolve_mentions_to_friendly_names(client, reaction.message.server.id, 
                 reaction.message.content, reaction.message.mentions, 
