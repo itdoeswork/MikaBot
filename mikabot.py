@@ -11,19 +11,29 @@ import praw
 from discord import Game
 from discord import emoji
 import datetime
-
+import traceback
 
 Client = discord.Client()
 client = commands.Bot(command_prefix = "-")
 command_prefix = "-"
 
 FENCER_EMOJI = "\U0001F93A"
-DANCER_EMOJI = "\U0001F57A"                            #Test Server                  #Real Server     
-ADMIN_CHANNEL_ID =       '452833600187138048'          #'474939881131343874'         #'452833600187138048'
-USER_LOG_CHANNEL_ID =    '414767958947135500'          #'474939868057698305'         #'414767958947135500' 
-DANCE_ROOM_CHANNEL_ID =  '467308553644933121'          #'474939794737070101'         #'467308553644933121'
-FENCE_ROOM_CHANNEL_ID =  '474946702411956224'          #'474939781940379648'         #'474946702411956224' 
-QUOTE_CHANNEL_ID =       '475042987051581460'          #'475057158707347466'         #'475042987051581460'
+DANCER_EMOJI = "\U0001F57A"                                    #Test Server                  #Real Server     
+ADMIN_CHANNEL_ID =       '452833600187138048'                  #'474939881131343874'         #'452833600187138048'
+USER_LOG_CHANNEL_ID =    '414767958947135500'   	       #'474939868057698305'         #'414767958947135500' 
+DANCE_ROOM_CHANNEL_ID =  '467308553644933121'   	       #'474939794737070101'         #'467308553644933121'
+FENCE_ROOM_CHANNEL_ID =  '474946702411956224'   	       #'474939781940379648'         #'474946702411956224' 
+QUOTE_CHANNEL_ID =       '475042987051581460'   	       #'475057158707347466'         #'475042987051581460'
+
+if(os.environ['MIKABOT_TEST'].upper() == "TRUE"):			
+	print("Launching in test mode...")
+	ADMIN_CHANNEL_ID =       '474939881131343874'          #'474939881131343874'         #'452833600187138048'
+	USER_LOG_CHANNEL_ID =    '474939868057698305'          #'474939868057698305'         #'414767958947135500' 
+	DANCE_ROOM_CHANNEL_ID =  '474939794737070101'          #'474939794737070101'         #'467308553644933121'
+	FENCE_ROOM_CHANNEL_ID =  '474939781940379648'          #'474939781940379648'         #'474946702411956224' 
+	QUOTE_CHANNEL_ID =       '475057158707347466'          #'475057158707347466'         #'475042987051581460'
+
+
 
 async def message_starred(client, channel_id, test_message_id):
     channel = client.get_channel(channel_id)
@@ -100,6 +110,46 @@ async def send_quote(client, channel, quote):
     	set_embed_image(embed, quote.embeds[0]["image"])
     await client.send_message(channel, embed=embed)
 
+'''Member Mentions has the wrong type of information in it, so I have to do a direct client call to resolve this.'''
+async def resolve_mentions_to_friendly_names(client, server_id, message, member_mentions, channel_mentions, role_mentions):
+        async def get_display_name(type_char, i):
+                async def _helper2(get_name,get_info):
+                        try:
+                                return get_name(await get_info(client, i))
+                        except Exception as e:
+                                print(e)
+                                traceback.print_tb(e.__traceback__)
+                                return None
+                async def _helper(array_mentions, get_name, get_info):
+                        for m in array_mentions:
+                             if(m.id == i):
+                                 return get_name(m)
+                        return await  _helper2(get_name, get_info)	
+                async def get_role(c, x):
+                    return {r.id : r for i in await c.get_server(server_id).roles}[x]
+                if(type_char == "!"):
+                    return await _helper(member_mentions, lambda x: "@" + x.name + "#" + x.discriminator, lambda c, x: c.get_user_info(x))  
+                if(type_char == "#"):
+                    return await _helper(channel_mentions, lambda x: "#" + x.name, lambda c, x: c.get_channel(x))  
+                if(type_char == "&"):
+                    return await _helper(role_mentions, lambda x: "@" + x.name, lambda c, x: get_role(c,x))
+	
+        get_mentions_re = re.compile("""(?ism)<((?:@!)|(?:@&)|(?:#))([0-9]+?)>""")
+        mentions = get_mentions_re.finditer(message)
+        new_message = ''
+        pos = 0
+        for m in mentions:
+            groups = (m_type_str, m_id) = m.groups()
+            m_type_char = m_type_str[-1]
+            display_name = await get_display_name(m_type_char, m_id)
+            if(display_name is None):
+                #just skip this mention as though it was regular text
+                continue
+            (start, end) = m.span()
+            new_message = new_message + message[pos:start] + display_name
+            pos = end
+        return new_message + message[pos:]
+
 async def submit_quote(client, channel_id, message, message_embeds, message_attachments, author):
     channel = client.get_channel(channel_id)
     #"<:mika:475061308308586527>"
@@ -118,7 +168,10 @@ async def on_reaction_add(reaction, user):
         print(reaction.message.attachments)
         if (reaction.count == 3) and (not await message_starred(client, DANCE_ROOM_CHANNEL_ID, reaction.message.id)):
             msg = ("\U0001F57A " + reaction.message.author.display_name + " has been invited to dance in " + reaction.message.channel.name + " \U0001F57A")
-            msg2 = '*"' + reaction.message.content + '"*' if len(reaction.message.content) > 0 else ""
+            message_content = await resolve_mentions_to_friendly_names(client, reaction.message.server.id, 
+                reaction.message.content, reaction.message.mentions, 
+                reaction.message.channel_mentions, reaction.message.role_mentions)
+            msg2 = '*"' + message_content + '"*' if len(reaction.message.content) > 0 else ""
             message_embeds = reaction.message.embeds
             message_attachments = reaction.message.attachments
             embed = discord.Embed(title= msg, description= msg2, color=0x7f1ae5)
@@ -127,7 +180,10 @@ async def on_reaction_add(reaction, user):
     if reaction.emoji == FENCER_EMOJI:
         if (reaction.count == 3) and (not await message_starred(client, FENCE_ROOM_CHANNEL_ID, reaction.message.id)):
             msg = ("\U0001F93A " + reaction.message.author.display_name + " has been eternally shamed from " + reaction.message.channel.name + " \U0001F93A")
-            msg2 = '*"' + reaction.message.content + '"*' if len(reaction.message.content) > 0 else ""
+            message_content = await resolve_mentions_to_friendly_names(client, reaction.message.server.id, 
+                reaction.message.content, reaction.message.mentions, 
+                reaction.message.channel_mentions, reaction.message.role_mentions)
+            msg2 = '*"' + message_content + '"*' if len(reaction.message.content) > 0 else ""
             message_embeds = reaction.message.embeds
             message_attachments = reaction.message.attachments
             embed = discord.Embed(title= msg, description= msg2, color=0x7f1ae5)
@@ -138,10 +194,12 @@ async def on_reaction_add(reaction, user):
 @client.event
 async def on_message_delete(message):
         fmt = 'message by {0.author} has been deleted:\n ***{0.content}***'
-        await client.send_message(discord.Object(id='452833600187138048'), fmt.format(message))
+        await client.send_message(discord.Object(id=ADMIN_CHANNEL_ID), fmt.format(message))
     
 @client.event
 async def on_message_edit(before, after):
+        if(before.content == after.content):
+             return 
         reply = ('**{0.author}** has' + ' edited their message:\n'
                     '*{0.content}*\n'
                     '→ ***{1.content}***')
@@ -348,7 +406,9 @@ async def on_message(message):
             await client.send_message(message.channel, "you are NOT Mikapproved yet! >.<'")
         
     if message.content.upper().startswith(command_prefix + "ADD QUOTE"):
-        await submit_quote(client, QUOTE_CHANNEL_ID, message.content[10:], message.embeds, message.attachments, message.author.name)
+        await submit_quote(client, QUOTE_CHANNEL_ID, 
+               await resolve_mentions_to_friendly_names(client, message.server.id, message.content[10:], message.mentions, message.channel_mentions, message.role_mentions),
+               message.embeds, message.attachments, message.author.name)
         await client.send_message(message.channel, "Your quote has been added to the list!")
     
     if message.content.upper().startswith(command_prefix + "QUOTE"):
