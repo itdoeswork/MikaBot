@@ -130,14 +130,14 @@ async def resolve_mentions_to_friendly_names(client, server_id, message, member_
                         return await  _helper2(get_name, get_info)	
                 async def get_role(c, x):
                     return {r.id : r for i in await c.get_server(server_id).roles}[x]
-                if(type_char == "!"):
+                if(type_char == "!" or type_char == "@"):
                     return await _helper(member_mentions, lambda x: "@" + x.name + "#" + x.discriminator, lambda c, x: c.get_user_info(x))  
                 if(type_char == "#"):
                     return await _helper(channel_mentions, lambda x: "#" + x.name, lambda c, x: c.get_channel(x))  
                 if(type_char == "&"):
                     return await _helper(role_mentions, lambda x: "@" + x.name, lambda c, x: get_role(c,x))
 	
-        get_mentions_re = re.compile("""(?ism)<((?:@!)|(?:@&)|(?:#))([0-9]+?)>""")
+        get_mentions_re = re.compile("""(?ism)<((?:@)|(?:@!)|(?:@&)|(?:#))([0-9]+?)>""")
         mentions = get_mentions_re.finditer(message)
         new_message = ''
         pos = 0
