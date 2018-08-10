@@ -426,7 +426,7 @@ async def on_message(message):
     if message.content.upper().startswith(command_prefix + "ADD QUOTE"):
         await submit_quote(client, QUOTE_CHANNEL_ID, 
                await resolve_mentions_to_friendly_names(client, message.server.id, message.content[10:], message.mentions, message.channel_mentions, message.role_mentions),
-               message.embeds, message.attachments, message.author.name)
+               message.embeds, message.attachments, """{name}#{discriminator}""".format(name=message.author.name, discriminator=message.author.discriminator))
         await client.send_message(message.channel, "Your quote has been added to the list!")
     
     if message.content.upper().startswith(command_prefix + "QUOTE"):
