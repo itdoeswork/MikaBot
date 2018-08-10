@@ -302,7 +302,7 @@ async def on_message(message):
     if message.content.upper().startswith(command_prefix + "HELP"):
         msg = "```Hi I'm MikaBot! ^-^. These are my commands:```  \n **-info** \n *Gives you basic info about the bot* \n \n \n `Greetings:` \n **-hello** \n *Say hi to me! ^-^*  \n **-bye** \n *Say goodbye to me!* \n **-morning** \n *Wish me good morning!* \n **-night** \n *Wish me good night!* \n \n \n `Love:` \n **-hug (@user)** \n *Hug someone!* \n **-secret hug (@user)** \n *Secretly hug someone!*\n **-love (@user)** \n *Declare your love!* \n **-secret love(@user)** \n *Declare your love secretly!* \n \n \n `Fight:` \n **-fight me** \n  *Challenge me to a fight!* \n **-duel (@user)** \n *Challenge someone else to a fight!* \n **-dance off(@user)** \n *Challenge someone to a dance battle!* \n **-shame (@user)** \n *Shame someone!* \n \n \n"
         await client.send_message(message.author, msg)
-        msg2 = "`fun:` \n **-say (message)* \n *Get me to say something!* \n **-add quote (message)** \n *Add a quote to the list of quotes!* \n **-quote** \n *Get a random quote from the list of quotes!* \n *-*ask mika (message)** \n *Ask me a question! I am a psychic you know.* \n **-what should i draw** \n *Gives you a thing to draw!* \n \n \n `misc:` \n **-coin** \n *Flips a coin!* \n **-ping** \n *Pong!* \n **-does mika approve** \n *Does mika approve?* \n **-pointless** \n *Press the pointless button!* \n **-brain** \n *get brained* \n \n \n `Reddit` \n **-wholesome meme** \n *I will show you a meme* \n **-meme** \n *I will show you a WHOLESOME meme* \n **-cute** \n *I will show you something adorable* \n **cat standing up** \n *I will show you a cat standing up* \n **-mika pic** \n *I will show you a selfie ^-^* "
+        msg2 = "`fun:` \n **-say (message)** \n *Get me to say something!* \n **-says (message)** \n *Get me to say something, but don't delete your say command message!* \n **-add quote (message)** \n *Add a quote to the list of quotes!* \n **-quote** \n *Get a random quote from the list of quotes!* \n *-*ask mika (message)** \n *Ask me a question! I am a psychic you know.* \n **-what should i draw** \n *Gives you a thing to draw!* \n \n \n `misc:` \n **-coin** \n *Flips a coin!* \n **-ping** \n *Pong!* \n **-does mika approve** \n *Does mika approve?* \n **-pointless** \n *Press the pointless button!* \n **-brain** \n *get brained* \n \n \n `Reddit` \n **-wholesome meme** \n *I will show you a meme* \n **-meme** \n *I will show you a WHOLESOME meme* \n **-cute** \n *I will show you something adorable* \n **cat standing up** \n *I will show you a cat standing up* \n **-mika pic** \n *I will show you a selfie ^-^* "
         await client.send_message(message.author, msg2)
                                   
     if message.content.upper().startswith(command_prefix + 'VOTE'):
@@ -397,9 +397,21 @@ async def on_message(message):
     if message.content.upper().startswith(command_prefix + "PING"):
         userID = message.author.id
         await client.send_message(message.channel, "<@%s> Pong!" % (userID))
-    if message.content.upper().startswith(command_prefix + "SAY"):
+    if message.content.upper().startswith(command_prefix + "SAYS "):
         args = message.content.split(" ")
         await client.send_message(message.channel, "%s" %(" ".join(args[1:])))
+    if message.content.upper().startswith(command_prefix + "SAY "):
+        try:
+            await client.delete_message(message)
+        except discord.Forbidden as f:
+            await client.send_message(message.channel, "Angel didn't give me permission to delete in this channel. :(")
+            return 
+        except Exception as e:
+            print(e)
+            traceback.print_tb(e.__traceback__)
+        args = message.content.split(" ")
+        await client.send_message(message.channel, "%s" %(" ".join(args[1:])))
+
     if message.content.upper().startswith(command_prefix + "POINTLESS"):
         if message.author.id == "343160195075276801":
             await client.send_message(message.channel, "pointless button has been pressed")
@@ -450,6 +462,14 @@ async def on_message(message):
     
         
     if message.content.upper().startswith(command_prefix + "SECRET HUG"):
+        try:
+            await client.delete_message(message)
+        except discord.Forbidden as f:
+            await client.send_message(message.channel, "Angel didn't give me permission to delete in this channel. :(")
+            return 
+        except Exception as e:
+            print(e)
+            traceback.print_tb(e.__traceback__)
         for user in message.mentions:
             msg = "Someone has hugged {}".format(user.mention)
             await client.send_message(message.channel,  msg + ". " + random.choice(["was it you Ashe?",
@@ -479,6 +499,14 @@ async def on_message(message):
                                                                      "wants to be loved by",
                                                                      "would never anime betray",]) + rec + ":heart:")
     if message.content.upper().startswith(command_prefix + "SECRET LOVE"):
+        try:
+            await client.delete_message(message)
+        except discord.Forbidden as f:
+            await client.send_message(message.channel, "Angel didn't give me permission to delete in this channel. :(")
+            return 
+        except Exception as e:
+            print(e)
+            traceback.print_tb(e.__traceback__)
         for user in message.mentions:
             msg = "Someone secretly loves {}".format(user.mention)
             await client.send_message(message.channel,  msg + ". " + random.choice(["was it you John?",
