@@ -438,7 +438,7 @@ async def on_message(message):
             userID = message.author.id
             auth = "<@%s> " % (userID)
             rec = " {}".format(user.mention)
-            await client.send_message(message.channel, + auth + "shames" + rec + ":face_palm:")
+            await client.send_message(message.channel, ":face_palm: " + auth + "shames" + rec + ":face_palm:")
         
             
         
