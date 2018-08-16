@@ -157,8 +157,7 @@ async def submit_quote(client, channel_id, message, message_embeds, message_atta
     channel = client.get_channel(channel_id)
     #"<:mika:475061308308586527>"
     embed = discord.Embed(title= "{dragon_head}  Quote Submitted By: {author}  {dragon_head}".format(author=author, dragon_head="\U0001F432"), 
-            description= ("{message}\n\n{dragon} {dragon} {dragon} {dragon} {dragon}" if len(message) > 81 else ("{dragon} {message} {dragon}"  if len(message) > 0 else "")).format(
-                dragon="\U0001F409", message=message), 
+            description= ("{message}").format(message=message), 
             color=0x7f1ae5)
     result_embed = await merge_embeds(embed, message_embeds, message_attachments)
     await client.send_message(discord.Object(id=channel_id), embed=result_embed)
