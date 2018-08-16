@@ -449,7 +449,7 @@ async def on_message(message):
             userID = message.author.id
             auth = "<@%s> " % (userID)
             rec = " {}".format(user.mention)
-            await client.send_message(message.channel, auth + random.choice(["hugs",
+            await client.send_message(message.channel, " :turtle:" + auth + random.choice(["hugs",
                                                                      "embraces",
                                                                      "super hugs",
                                                                      "cuddles",
@@ -458,7 +458,7 @@ async def on_message(message):
                                                                      "wishes to be held by",
                                                                      "hugs and hugs and hugs and HUGS",
                                                                      "wishes to hug ",
-                                                                     "fucking hugs",]) + rec + ":turtle:")
+                                                                     "fucking hugs",]) + rec + " :turtle:")
     
         
     if message.content.upper().startswith(command_prefix + "SECRET HUG"):
@@ -472,7 +472,7 @@ async def on_message(message):
             traceback.print_tb(e.__traceback__)
         for user in message.mentions:
             msg = "Someone has hugged {}".format(user.mention)
-            await client.send_message(message.channel,  msg + ". " + random.choice(["was it you Ashe?",
+            await client.send_message(message.channel, ":ghost: " + msg + ". " + random.choice(["was it you Ashe?",
                                                                      "I wonder who it was.",
                                                                      "hmm",
                                                                      "interesting...",
@@ -481,6 +481,24 @@ async def on_message(message):
                                                                      "   ",
                                                                      "   ",               
                                                                      "Zoinks!",]) + ":ghost:")
+    if message.content.upper().startswith(command_prefix + "BEDTIME"):
+        for user in message.mentions:
+            userID = message.author.id
+            auth = "<@%s> " % (userID)
+            rec = " {}".format(user.mention)
+            await client.send_message(message.channel, ":zzz: " + auth + "wants" + rec + random.choice([" to go to bed",
+                                                                     " to sleep",
+                                                                     " to rest",
+                                                                     " to go the fuck to sleep",
+                                                                     " to shup up, close their eyes, and sleep",
+                                                                     " to sleep because they really care about their friend.",
+                                                                     " to sleep in hopes that it will make them smarter",
+                                                                     " to sleep because they aren't making any sense anymore",
+                                                                     " to sleep",
+                                                                     " to bring mika tuna--uh-- yeah, I wrote this one. uh. please give me tuna?",
+                                                                     " to sleep, but don't look under the bed",
+                                                                     " to count sheep and fall asleep",]) + " :zzz:")
+            
     if message.content.upper().startswith(command_prefix + "LOVE"):
         for user in message.mentions:
             userID = message.author.id
@@ -509,7 +527,7 @@ async def on_message(message):
             traceback.print_tb(e.__traceback__)
         for user in message.mentions:
             msg = "Someone secretly loves {}".format(user.mention)
-            await client.send_message(message.channel,  msg + ". " + random.choice(["was it you John?",
+            await client.send_message(message.channel, ":thinking: " + msg + ". " + random.choice(["was it you John?",
                                                                      "ooh la la!",
                                                                      "hmm..hmm..",
                                                                      "OOF",
@@ -523,14 +541,14 @@ async def on_message(message):
             userID = message.author.id
             auth = "<@%s>" % (userID)
             msg = "wants to fight {}".format(user.mention)
-            await client.send_message(message.channel, auth + " " + msg + ":fencer:")
+            await client.send_message(message.channel, ":fencer: " + auth + " " + msg + ":fencer:")
 
     if message.content.upper().startswith(command_prefix + "DANCE OFF"):
         for user in message.mentions:
             userID = message.author.id
             auth = "<@%s>" % (userID)
             msg = "challenges {}".format(user.mention)
-            await client.send_message(message.channel, auth + " " + msg + "  " + "to a dance battle" + "  " + random.choice([":man_dancing:",
+            await client.send_message(message.channel, ":man_dancing: " + auth + " " + msg + "  " + "to a dance battle" + "  " + random.choice([":man_dancing:",
                                                                                                                              ":dancer:",
                                                                                                                              ":dancers:",]))
             
@@ -539,10 +557,10 @@ async def on_message(message):
             userID = message.author.id
             auth = "<@%s>" % (userID)
             msg = "challenges {}".format(user.mention)
-            await client.send_message(message.channel, auth + " " + msg + "  "+ "to a d-d-d-d-d-duel" + ":fencer:")
+            await client.send_message(message.channel, ":fencer: " + auth + " " + msg + "  "+ "to a d-d-d-d-d-duel" + ":fencer:")
             
     if message.content.upper().startswith(command_prefix + "ASK MIKA"):
-            await client.send_message(message.channel, random.choice(["Maybe? idk. Now that I think about it, this thing may be broken. NEXT!:8ball:",
+            await client.send_message(message.channel, ":8ball: " + random.choice(["Maybe? idk. Now that I think about it, this thing may be broken. NEXT!:8ball:",
                                                                      "Certainly. :8ball:",
                                                                      "Yes. I'd even bet one of my 9 lives on it. :8ball:",
                                                                      "Not a chance. nope. :8ball:",
@@ -605,83 +623,87 @@ async def on_message(message):
                                                                      "Heads",
                                                                      "Tails",
                                                                      "it landed on the side! :O!",]))
-    if message.content.upper().startswith(command_prefix + "WHAT SHOULD I DRAW"):
-         await client.send_message(message.channel, ":paintbrush: " + random.choice(["A man",
-                                                                     "a woman",
-                                                                     "a teenager",
-                                                                     "a child",
-                                                                     "a baby",
-                                                                     "a firefighter",
-                                                                     "a princess",
-                                                                     "a mermaid",
-                                                                     "a dragon",
-                                                                     "a cheerleader",
-                                                                     "a furry",
-                                                                     "an emo",
-                                                                     "a vampire",
-                                                                     "a lion",
-                                                                     "a hunter",
-                                                                     "a knight",
-                                                                     "an alien",
-                                                                     "a cowboy",
-                                                                     "an anime character",
-                                                                     "a cat",
-                                                                     "a dog",
-                                                                     "a teacher",
-                                                                     "a salesperson",
-                                                                     "a rockstar",
-                                                                     "a rebel",
-                                                                     "a ninja",
-                                                                     "a samurai",
-                                                                     "a body builder",
-                                                                     "a doctor",
-                                                                     "a monkey",]) + " wearing " + random.choice(["a hat ",
-                                                                                                               "a snazzy jacket ",
-                                                                                                               "a leather skirt ",
-                                                                                                               "a cowboy hat ",
-                                                                                                               "a cool cape ",
-                                                                                                               "a pair of clown shoes ",
-                                                                                                               "chain mail armor ",
-                                                                                                               "a little backpack ",
-                                                                                                               "a pair of skinny jeans ",
-                                                                                                               "a summer dress ",
-                                                                                                               "a fursuit ",
-                                                                                                               "heavy eyeliner ",
-                                                                                                               "an anime-like hairstyle ",
-                                                                                                               "a vest ",
-                                                                                                               "nothing ",
-                                                                                                               "a giant poofy jacket ",]) + "while " + random.choice(["dancing ",
-                                                                                                                                                        "fighting robots ",
-                                                                                                                                                        "giving a speech ",
-                                                                                                                                                        "watching anime ",
-                                                                                                                                                        "eating fruits ",
-                                                                                                                                                        "a pair of clown shoes ",
-                                                                                                                                                        "hunting evil zombies ",
-                                                                                                                                                        "chilling with friends ",
-                                                                                                                                                        "studying ",
-                                                                                                                                                        "baking a cake ",
-                                                                                                                                                        "hanging out with puppies ",
-                                                                                                                                                        "playing the guitar ",
-                                                                                                                                                        "stargazing ",
-                                                                                                                                                        "drawing ",
-                                                                                                                                                        "playing a game ",
-                                                                                                                                                        "having a picnic ",]) + "at " + random.choice(["the cinema",
-                                                                                                                                                                                          "the park",
-                                                                                                                                                                                          "at a concert",
-                                                                                                                                                                                          "the opening of a mountain cave",
-                                                                                                                                                                                          "the graveyard",
-                                                                                                                                                                                          "home",
-                                                                                                                                                                                          "the zoo",
-                                                                                                                                                                                          "a furry convention",
-                                                                                                                                                                                          "a furry convention",
-                                                                                                                                                                                          "a party",
-                                                                                                                                                                                          "school",
-                                                                                                                                                                                          "a friends' house",
-                                                                                                                                                                                          "the beach",
-                                                                                                                                                                                          "the mall",
-                                                                                                                                                                                          "the department store",
-                                                                                                                                                                                          "a playground",]) + " :paintbrush:")
-         
+        if message.content.upper().startswith(command_prefix + "WHAT SHOULD I DRAW"):
+                                                person = ["a man",
+                                                    "a woman",
+                                                    "a teenager",
+                                                    "a child",
+                                                    "a baby",
+                                                    "a firefighter",
+                                                    "a princess",
+                                                    "a mermaid",
+                                                    "a dragon",
+                                                    "a cheerleader",
+                                                    "a furry",
+                                                    "an emo",
+                                                    "a vampire",
+                                                    "a lion",
+                                                    "a hunter",
+                                                    "a knight",
+                                                    "an alien",
+                                                    "a cowboy",
+                                                    "an anime character",
+                                                    "a cat",
+                                                    "a dog",
+                                                    "a teacher",
+                                                    "a salesperson",
+                                                    "a rockstar",
+                                                    "a rebel",
+                                                    "a ninja",
+                                                    "a samurai",
+                                                    "a body builder",
+                                                    "a doctor",
+                                                    "a monkey",]
+                                                clothing = ["a hat ",
+                                                    "a snazzy jacket ",
+                                                    "a leather skirt ",
+                                                    "a cowboy hat ",
+                                                    "a cool cape ",
+                                                    "a pair of clown shoes ",
+                                                    "chain mail armor ",
+                                                    "a little backpack ",
+                                                    "a pair of skinny jeans ",
+                                                    "a summer dress ",
+                                                    "a fursuit ",
+                                                    "heavy eyeliner ",
+                                                    "an anime-like hairstyle ",
+                                                    "a vest ",
+                                                    "nothing ",
+                                                    "a giant poofy jacket ",]
+                                                activity = ["dancing ",
+                                                    "fighting robots ",
+                                                    "giving a speech ",
+                                                    "watching anime ",
+                                                    "eating fruits ",
+                                                    "a pair of clown shoes ",
+                                                    "hunting evil zombies ",
+                                                    "chilling with friends ",
+                                                    "studying ",
+                                                    "baking a cake ",
+                                                    "hanging out with puppies ",
+                                                    "playing the guitar ",
+                                                    "stargazing ",
+                                                    "drawing ",
+                                                    "playing a game ",
+                                                    "having a picnic ",]
+                                                place = ["the cinema",
+                                                    "the park",
+                                                    "at a concert",
+                                                    "the opening of a mountain cave",
+                                                    "the graveyard",
+                                                    "home",
+                                                    "the zoo",
+                                                    "a furry convention",
+                                                    "a furry convention",
+                                                    "a party",
+                                                    "school",
+                                                    "a friends' house",
+                                                    "the beach",
+                                                    "the mall",
+                                                    "the department store",
+                                                    "a playground",]
+    await client.send_message(message.channel, """:paintbrush: {person} wearing {clothing} while {activity} at {place} :paintbrush:""".format(person=random.choice(person), clothing=random.choice(clothing), activity=random.choice(activity), place=random.choice(place)))
+
 
 
 
