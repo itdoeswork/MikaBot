@@ -578,85 +578,25 @@ async def on_message(message):
     if message.content.upper().startswith(command_prefix + "COIN"):
          await client.send_message(message.channel, random.choice(("Heads "*22).split() + ("Tails "*22).split() + ["it landed on the side! :O!"]))
     if message.content.upper().startswith(command_prefix + "WHAT SHOULD I DRAW"):
-                                                person = ["a man",
-                                                    "a woman",
-                                                    "a teenager",
-                                                    "a child",
-                                                    "a baby",
-                                                    "a firefighter",
-                                                    "a princess",
-                                                    "a mermaid",
-                                                    "a dragon",
-                                                    "a cheerleader",
-                                                    "a furry",
-                                                    "an emo",
-                                                    "a vampire",
-                                                    "a lion",
-                                                    "a hunter",
-                                                    "a knight",
-                                                    "an alien",
-                                                    "a cowboy",
-                                                    "an anime character",
-                                                    "a cat",
-                                                    "a dog",
-                                                    "a teacher",
-                                                    "a salesperson",
-                                                    "a rockstar",
-                                                    "a rebel",
-                                                    "a ninja",
-                                                    "a samurai",
-                                                    "a body builder",
-                                                    "a doctor",
-                                                    "a monkey",]
-                                                clothing = ["a hat ",
-                                                    "a snazzy jacket ",
-                                                    "a leather skirt ",
-                                                    "a cowboy hat ",
-                                                    "a cool cape ",
-                                                    "a pair of clown shoes ",
-                                                    "chain mail armor ",
-                                                    "a little backpack ",
-                                                    "a pair of skinny jeans ",
-                                                    "a summer dress ",
-                                                    "a fursuit ",
-                                                    "heavy eyeliner ",
-                                                    "an anime-like hairstyle ",
-                                                    "a vest ",
-                                                    "nothing ",
-                                                    "a giant poofy jacket ",]
-                                                activity = ["dancing ",
-                                                    "fighting robots ",
-                                                    "giving a speech ",
-                                                    "watching anime ",
-                                                    "eating fruits ",
-                                                    "a pair of clown shoes ",
-                                                    "hunting evil zombies ",
-                                                    "chilling with friends ",
-                                                    "studying ",
-                                                    "baking a cake ",
-                                                    "hanging out with puppies ",
-                                                    "playing the guitar ",
-                                                    "stargazing ",
-                                                    "drawing ",
-                                                    "playing a game ",
-                                                    "having a picnic ",]
-                                                place = ["the cinema",
-                                                    "the park",
-                                                    "at a concert",
-                                                    "the opening of a mountain cave",
-                                                    "the graveyard",
-                                                    "home",
-                                                    "the zoo",
-                                                    "a furry convention",
-                                                    "a furry convention",
-                                                    "a party",
-                                                    "school",
-                                                    "a friends' house",
-                                                    "the beach",
-                                                    "the mall",
-                                                    "the department store",
-                                                    "a playground",]
-    await client.send_message(message.channel, """:paintbrush: {person} wearing {clothing} while {activity} at {place} :paintbrush:""".format(person=random.choice(person), clothing=random.choice(clothing), activity=random.choice(activity), place=random.choice(place)))
+        person = ["a man", "a woman", "a teenager", "a child", "a baby", "a firefighter", "a princess",
+                  "a mermaid", "a dragon", "a cheerleader", "a furry", "an emo", "a vampire", "a lion",
+                  "a hunter", "a knight", "an alien", "a cowboy", "an anime character", "a cat",
+                  "a dog", "a teacher", "a salesperson", "a rockstar", "a rebel", "a ninja", "a samurai",
+                  "a body builder", "a doctor", "a monkey"]
+
+        clothing = ["a hat", "a snazzy jacket", "a leather skirt", "a cowboy hat", "a cool cape", "a pair of clown shoes",
+                    "chain mail armor", "a little backpack", "a pair of skinny jeans", "a summer dress", "a fursuit",
+                    "heavy eyeliner", "an anime-like hairstyle", "a vest", "nothing", "a giant poofy jacket"]
+        
+        activity = ["dancing", "fighting robots", "giving a speech", "watching anime", "eating fruits", "a pair of clown shoes",
+                    "hunting evil zombies", "chilling with friends", "studying","baking a cake", "hanging out with puppies",
+                    "playing the guitar", "stargazing", "drawing", "playing a game", "having a picnic"]
+        
+        place = ["the cinema", "the park", "at a concert", "the opening of a mountain cave", "the graveyard", "home",
+                 "the zoo", "a furry convention", "a furry convention", "a party", "school", "a friends' house", "the beach",
+                 "the mall", "the department store", "a playground"]
+
+        await client.send_message(message.channel, """:paintbrush: {person} wearing {clothing} while {activity} at {place} :paintbrush:""".format(person=random.choice(person), clothing=random.choice(clothing), activity=random.choice(activity), place=random.choice(place)))
 
 
 
