@@ -470,7 +470,17 @@ async def on_message(message):
                                                                      "wishes to hug ",
                                                                      "fucking hugs",]) + rec + " :turtle:")
     
-        
+     if message.content.upper().startswith(command_prefix + "BASH NO"):
+        if message.author.id == "244838220259393538":
+            await client.send_message(message.channel, random.choice(["you can't stop urself bash.",
+                                                                     "u know ur really fucked when you ask a bot to stop u",
+                                                                     "you furry",
+                                                                     "...",
+                                                                     "there is no saving u bash",
+                                                                     "don't look at me :shrug:",]))
+        else:
+            await client.send_message(message.channel, "{0.author.mention}".format(message) + " wants bash to stop." )
+    
     if message.content.upper().startswith(command_prefix + "SECRET HUG"):
         try:
             await client.delete_message(message)
@@ -491,6 +501,7 @@ async def on_message(message):
                                                                      "   ",
                                                                      "   ",               
                                                                      "Zoinks!",]) + ":ghost:")
+
     if message.content.upper().startswith(command_prefix + "BEDTIME"):
         for user in message.mentions:
             userID = message.author.id
