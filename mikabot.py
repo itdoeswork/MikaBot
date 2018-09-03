@@ -470,7 +470,7 @@ async def on_message(message):
                                                                      "wishes to hug ",
                                                                      "fucking hugs",]) + rec + " :turtle:")
     
-     if message.content.upper().startswith(command_prefix + "BASH NO"):
+    if message.content.upper().startswith(command_prefix + "BASH NO"):
         if message.author.id == "244838220259393538":
             await client.send_message(message.channel, random.choice(["you can't stop urself bash.",
                                                                      "u know ur really fucked when you ask a bot to stop u",
