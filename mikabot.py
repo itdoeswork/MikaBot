@@ -259,10 +259,6 @@ async def on_message(message):
         post_to_pick = random.randint(1, 50)
         for i in range(0, post_to_pick):
             submission = next(x for x in memes_submissions if not x.stickied)
-	if message.author.id == "244838220259393538":
-		await client.send_message(message.channel, "no you don't deserve mika pics")
-	
-	else:
         await client.send_message(message.channel, submission.url)
         
     if message.content.upper().startswith(command_prefix + "CAT STANDING UP"):
