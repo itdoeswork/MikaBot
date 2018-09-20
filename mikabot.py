@@ -24,6 +24,8 @@ USER_LOG_CHANNEL_ID =    '414767958947135500'   	       #'474939868057698305'   
 DANCE_ROOM_CHANNEL_ID =  '467308553644933121'   	       #'474939794737070101'         #'467308553644933121'
 FENCE_ROOM_CHANNEL_ID =  '474946702411956224'   	       #'474939781940379648'         #'474946702411956224' 
 QUOTE_CHANNEL_ID =       '475042987051581460'   	       #'475057158707347466'         #'475042987051581460'
+NSFW_QUOTE_CHANNEL_ID =  '477562804988149770'                  #'477562804988149770'         #''
+NSFW_QUOTE_DISABLED = True
 REACTION_REQUIREMENT = 3
 
 if('MIKABOT_TEST' in os.environ and os.environ['MIKABOT_TEST'].upper() == "TRUE"):			
@@ -34,9 +36,12 @@ if('MIKABOT_TEST' in os.environ and os.environ['MIKABOT_TEST'].upper() == "TRUE"
         DANCE_ROOM_CHANNEL_ID =  '474939794737070101'          #'474939794737070101'         #'467308553644933121'
         FENCE_ROOM_CHANNEL_ID =  '474939781940379648'          #'474939781940379648'         #'474946702411956224' 
         QUOTE_CHANNEL_ID =       '475057158707347466'          #'475057158707347466'         #'475042987051581460'
+        NSFW_QUOTE_CHANNEL_ID =  '477562804988149770'          #'477562804988149770'         #''
+        NSFW_QUOTE_DISABLED = False
 
 
-
+def channel_is_nsfw(channel):
+    return "nsfw" in channel.name.lower()
 
 async def message_starred(client, channel_id, test_message_id):
     channel = client.get_channel(channel_id)
@@ -438,13 +443,19 @@ async def on_message(message):
             await client.send_message(message.channel, "you are NOT Mikapproved yet! >.<'")
         
     if message.content.upper().startswith(command_prefix + "ADD QUOTE"):
-        await submit_quote(client, QUOTE_CHANNEL_ID, 
-               await resolve_mentions_to_friendly_names(client, message.server.id, message.content[10:], message.mentions, message.channel_mentions, message.role_mentions),
-               message.embeds, message.attachments, """{name}#{discriminator}""".format(name=message.author.name, discriminator=message.author.discriminator))
-        await client.send_message(message.channel, "Your quote has been added to the list!")
+        if(NSFW_QUOTE_DISABLED and channel_is_nsfw(message.channel)):
+             await client.send_message(message.channel, "Angel has disallowed NSFW quotes on this server, sorry. You're not allowed to add quotes that could only be said from NSFW channels.")
+        else:
+             quote_channel_id = QUOTE_CHANNEL_ID if (not channel_is_nsfw(message.channel)) else NSFW_QUOTE_CHANNEL_ID
+             await submit_quote(client, quote_channel_id, 
+                    await resolve_mentions_to_friendly_names(client, message.server.id, message.content[10:], message.mentions, 
+                        message.channel_mentions, message.role_mentions),
+                    message.embeds, message.attachments, """{name}#{discriminator}""".format(name=message.author.name, discriminator=message.author.discriminator))
+             await client.send_message(message.channel, "Your quote has been added to the list!")
     
     if message.content.upper().startswith(command_prefix + "QUOTE"):
-        quote =  await get_quote(client, QUOTE_CHANNEL_ID)
+        quote_channel_id = QUOTE_CHANNEL_ID if (NSFW_QUOTE_DISABLED) or (not channel_is_nsfw(message.channel)) else random.choice([QUOTE_CHANNEL_ID, NSFW_QUOTE_CHANNEL_ID])
+        quote =  await get_quote(client, quote_channel_id)
         await send_quote(client, message.channel, quote)
     
     if message.content.upper().startswith(command_prefix + "SHAME"):
