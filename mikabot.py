@@ -156,9 +156,8 @@ async def resolve_mentions_to_friendly_names(client, server_id, message, member_
 async def submit_quote(client, channel_id, message, message_embeds, message_attachments, author):
     channel = client.get_channel(channel_id)
     #"<:mika:475061308308586527>"
-    embed = discord.Embed(title= "{dragon_head}  **Quote Submitted By:** *{author}*  {dragon_head}".format(author=author, dragon_head="\U0001F432"), 
-            description= ("{dragon} {dragon} {dragon} {dragon} {dragon}\n\n{message}\n\n{dragon} {dragon} {dragon} {dragon} {dragon}" if len(message) > 81 else ("{dragon} {message} {dragon}"  if len(message) > 0 else "")).format(
-                dragon="\U0001F409", message=message), 
+    embed = discord.Embed(title= "{dragon_head}  Quote submitted by: {author}  {dragon_head}".format(author=author, dragon_head="\U0001F432"), 
+            description= ("{message}").format(message=message), 
             color=0x7f1ae5)
     result_embed = await merge_embeds(embed, message_embeds, message_attachments)
     await client.send_message(discord.Object(id=channel_id), embed=result_embed)
@@ -239,6 +238,17 @@ async def on_message(message):
         embed = discord.Embed(title="MikaBot", description="The cutest bot on discord! ^-^", color=0x7f1ae5)
         embed.add_field(name="Owner", value="angel#9928", inline=False)
         await client.send_message(message.channel, embed=embed)
+	
+    if message.content.upper().startswith(command_prefix + "ART PET"):
+        reddit = praw.Reddit(client_id='3VJY49w5aP2XpQ',
+                         client_secret='xcPKaFpEBuP2S5LAtJLONAy1M1A',
+                         user_agent='"MikaBot v1.0 (by /u/ourangelofsorrows)"')
+
+        memes_submissions = reddit.subreddit('DiscordArtPets').new()
+        post_to_pick = random.randint(1, 10)
+        for i in range(0, post_to_pick):
+            submission = next(x for x in memes_submissions if not x.stickied)
+        await client.send_message(message.channel, submission.url)
     
     if message.content.upper().startswith(command_prefix + "MIKA PIC"):
         reddit = praw.Reddit(client_id='3VJY49w5aP2XpQ',
@@ -249,7 +259,11 @@ async def on_message(message):
         post_to_pick = random.randint(1, 50)
         for i in range(0, post_to_pick):
             submission = next(x for x in memes_submissions if not x.stickied)
-        await client.send_message(message.channel, submission.url)
+            
+        if message.author.id == "244838220259393538":
+            await client.send_message(message.channel, "no you don't deserve Mika pics")
+        else:
+                await client.send_message(message.channel, submission.url)
         
     if message.content.upper().startswith(command_prefix + "CAT STANDING UP"):
         reddit = praw.Reddit(client_id='3VJY49w5aP2XpQ',
@@ -300,9 +314,9 @@ async def on_message(message):
     
         
     if message.content.upper().startswith(command_prefix + "HELP"):
-        msg = "```Hi I'm MikaBot! ^-^. These are my commands:```  \n **-info** \n *Gives you basic info about the bot* \n \n \n `Greetings:` \n **-hello** \n *Say hi to me! ^-^*  \n **-bye** \n *Say goodbye to me!* \n **-morning** \n *Wish me good morning!* \n **-night** \n *Wish me good night!* \n \n \n `Love:` \n **-hug (@user)** \n *Hug someone!* \n **-secret hug (@user)** \n *Secretly hug someone!*\n **-love (@user)** \n *Declare your love!* \n **-secret love(@user)** \n *Declare your love secretly!* \n \n \n `Fight:` \n **-fight me** \n  *Challenge me to a fight!* \n **-duel (@user)** \n *Challenge someone else to a fight!* \n **-dance off(@user)** \n *Challenge someone to a dance battle!* \n **-shame (@user)** \n *Shame someone!* \n \n \n"
+        msg = "```Hi I'm MikaBot! ^-^. These are my commands:```  \n **-info** \n *Gives you basic info about the bot* \n \n \n `Greetings:` \n **-hello** \n *Say hi to me! ^-^*  \n **-bye** \n *Say goodbye to me!* \n **-morning** \n *Wish me good morning!* \n **-night** \n *Wish me good night!* \n \n \n `Love:` \n **-hug (@user)** \n *Hug someone!* \n **-secret hug (@user)** \n *Secretly hug someone!*\n **-love (@user)** \n *Declare your love!* \n **-secret love(@user)** \n *Declare your love secretly!*  \n **-bedtime(@user)** \n *tell someone to take a catnap!* \n \n \n `Fight:` \n **-fight me** \n  *Challenge me to a fight!* \n **-duel (@user)** \n *Challenge someone else to a fight!* \n **-dance off(@user)** \n *Challenge someone to a dance battle!* \n **-shame (@user)** \n *Shame someone!* \n \n \n"
         await client.send_message(message.author, msg)
-        msg2 = "`fun:` \n **-say (message)** \n *Get me to say something!* \n **-says (message)** \n *Get me to say something, but don't delete your say command message!* \n **-add quote (message)** \n *Add a quote to the list of quotes!* \n **-quote** \n *Get a random quote from the list of quotes!* \n *-*ask mika (message)** \n *Ask me a question! I am a psychic you know.* \n **-what should i draw** \n *Gives you a thing to draw!* \n \n \n `misc:` \n **-coin** \n *Flips a coin!* \n **-ping** \n *Pong!* \n **-does mika approve** \n *Does mika approve?* \n **-pointless** \n *Press the pointless button!* \n **-brain** \n *get brained* \n \n \n `Reddit` \n **-wholesome meme** \n *I will show you a meme* \n **-meme** \n *I will show you a WHOLESOME meme* \n **-cute** \n *I will show you something adorable* \n **cat standing up** \n *I will show you a cat standing up* \n **-mika pic** \n *I will show you a selfie ^-^* "
+        msg2 = "`fun:` \n **-say (message)** \n *Get me to say something!* \n **-says (message)** \n *Get me to say something, but don't delete your say command message!* \n **-add quote (message)** \n *Add a quote to the list of quotes!* \n **-quote** \n *Get a random quote from the list of quotes!* \n *-*ask mika (message)** \n *Ask me a question! I am a psychic you know.* \n **-what should i draw** \n *Gives you a thing to draw!* \n \n \n `misc:` \n **-coin** \n *Flips a coin!* \n **-ping** \n *Pong!* \n **-does mika approve** \n *Does mika approve?* \n **-pointless** \n *Press the pointless button!* \n **-brain** \n *get brained* \n \n \n `Reddit` \n **-wholesome meme** \n *I will show you a meme* \n **-meme** \n *I will show you a WHOLESOME meme* \n **-cute** \n *I will show you something adorable* \n **-cat standing up** \n *I will show you a cat standing up* \n **-mika pic** \n *I will show you a selfie ^-^* \n **-art pet** \n *I will show you a pic of a pet of the server's members ^-^*"
         await client.send_message(message.author, msg2)
                                   
     if message.content.upper().startswith(command_prefix + 'VOTE'):
@@ -438,7 +452,7 @@ async def on_message(message):
             userID = message.author.id
             auth = "<@%s> " % (userID)
             rec = " {}".format(user.mention)
-            await client.send_message(message.channel, auth + "shames" + rec + ":face_palm:")
+            await client.send_message(message.channel, ":face_palm: " + auth + "shames" + rec + ":face_palm:")
         
             
         
@@ -449,7 +463,7 @@ async def on_message(message):
             userID = message.author.id
             auth = "<@%s> " % (userID)
             rec = " {}".format(user.mention)
-            await client.send_message(message.channel, auth + random.choice(["hugs",
+            await client.send_message(message.channel, " :turtle:" + auth + random.choice(["hugs",
                                                                      "embraces",
                                                                      "super hugs",
                                                                      "cuddles",
@@ -458,9 +472,19 @@ async def on_message(message):
                                                                      "wishes to be held by",
                                                                      "hugs and hugs and hugs and HUGS",
                                                                      "wishes to hug ",
-                                                                     "fucking hugs",]) + rec + ":turtle:")
+                                                                     "fucking hugs",]) + rec + " :turtle:")
     
-        
+    if message.content.upper().startswith(command_prefix + "BASH NO"):
+        if message.author.id == "244838220259393538":
+            await client.send_message(message.channel, random.choice(["you can't stop urself bash.",
+                                                                     "u know ur really fucked when you ask a bot to stop u",
+                                                                     "you furry",
+                                                                     "...",
+                                                                     "there is no saving u bash",
+                                                                     "don't look at me :shrug:",]))
+        else:
+            await client.send_message(message.channel, "{0.author.mention}".format(message) + " wants bash to stop." )
+    
     if message.content.upper().startswith(command_prefix + "SECRET HUG"):
         try:
             await client.delete_message(message)
@@ -472,7 +496,7 @@ async def on_message(message):
             traceback.print_tb(e.__traceback__)
         for user in message.mentions:
             msg = "Someone has hugged {}".format(user.mention)
-            await client.send_message(message.channel,  msg + ". " + random.choice(["was it you Ashe?",
+            await client.send_message(message.channel, ":ghost: " + msg + ". " + random.choice(["was it you Ashe?",
                                                                      "I wonder who it was.",
                                                                      "hmm",
                                                                      "interesting...",
@@ -481,6 +505,25 @@ async def on_message(message):
                                                                      "   ",
                                                                      "   ",               
                                                                      "Zoinks!",]) + ":ghost:")
+
+    if message.content.upper().startswith(command_prefix + "BEDTIME"):
+        for user in message.mentions:
+            userID = message.author.id
+            auth = "<@%s> " % (userID)
+            rec = " {}".format(user.mention)
+            await client.send_message(message.channel, ":zzz: " + auth + "wants" + rec + random.choice([" to go to bed",
+                                                                     " to sleep",
+                                                                     " to rest",
+                                                                     " to go the fuck to sleep",
+                                                                     " to shup up, close their eyes, and sleep",
+                                                                     " to sleep because they really care about their friend.",
+                                                                     " to sleep in hopes that it will make them smarter",
+                                                                     " to sleep because they aren't making any sense anymore",
+                                                                     " to sleep",
+                                                                     " to bring mika tuna--uh-- yeah, I wrote this one. uh. please give me tuna?",
+                                                                     " to sleep, but don't look under the bed",
+                                                                     " to count sheep and fall asleep",]) + " :zzz:")
+            
     if message.content.upper().startswith(command_prefix + "LOVE"):
         for user in message.mentions:
             userID = message.author.id
@@ -509,7 +552,7 @@ async def on_message(message):
             traceback.print_tb(e.__traceback__)
         for user in message.mentions:
             msg = "Someone secretly loves {}".format(user.mention)
-            await client.send_message(message.channel,  msg + ". " + random.choice(["was it you John?",
+            await client.send_message(message.channel, ":thinking: " + msg + ". " + random.choice(["was it you John?",
                                                                      "ooh la la!",
                                                                      "hmm..hmm..",
                                                                      "OOF",
@@ -523,14 +566,14 @@ async def on_message(message):
             userID = message.author.id
             auth = "<@%s>" % (userID)
             msg = "wants to fight {}".format(user.mention)
-            await client.send_message(message.channel, auth + " " + msg + ":fencer:")
+            await client.send_message(message.channel, ":fencer: " + auth + " " + msg + ":fencer:")
 
     if message.content.upper().startswith(command_prefix + "DANCE OFF"):
         for user in message.mentions:
             userID = message.author.id
             auth = "<@%s>" % (userID)
             msg = "challenges {}".format(user.mention)
-            await client.send_message(message.channel, auth + " " + msg + "  " + "to a dance battle" + "  " + random.choice([":man_dancing:",
+            await client.send_message(message.channel, ":man_dancing: " + auth + " " + msg + "  " + "to a dance battle" + "  " + random.choice([":man_dancing:",
                                                                                                                              ":dancer:",
                                                                                                                              ":dancers:",]))
             
@@ -539,10 +582,10 @@ async def on_message(message):
             userID = message.author.id
             auth = "<@%s>" % (userID)
             msg = "challenges {}".format(user.mention)
-            await client.send_message(message.channel, auth + " " + msg + "  "+ "to a d-d-d-d-d-duel" + ":fencer:")
+            await client.send_message(message.channel, ":fencer: " + auth + " " + msg + "  "+ "to a d-d-d-d-d-duel" + ":fencer:")
             
     if message.content.upper().startswith(command_prefix + "ASK MIKA"):
-            await client.send_message(message.channel, random.choice(["Maybe? idk. Now that I think about it, this thing may be broken. NEXT!:8ball:",
+            await client.send_message(message.channel, ":8ball: " + random.choice(["Maybe? idk. Now that I think about it, this thing may be broken. NEXT!:8ball:",
                                                                      "Certainly. :8ball:",
                                                                      "Yes. I'd even bet one of my 9 lives on it. :8ball:",
                                                                      "Not a chance. nope. :8ball:",
@@ -559,129 +602,28 @@ async def on_message(message):
                                                                      "Ask yourself! :8ball:",]))
             
     if message.content.upper().startswith(command_prefix + "COIN"):
-         await client.send_message(message.channel, random.choice(["Heads",
-                                                                     "Tails",
-                                                                     "Heads",
-                                                                     "Tails",
-                                                                     "Heads",
-                                                                     "Tails",
-                                                                     "Heads",
-                                                                     "Tails",
-                                                                     "Heads",
-                                                                     "Tails",
-                                                                     "Heads",
-                                                                     "Tails",
-                                                                     "Tails",
-                                                                     "Heads",
-                                                                     "Tails",
-                                                                     "Heads",
-                                                                     "Tails",
-                                                                     "Heads",
-                                                                     "Tails",
-                                                                     "Heads",
-                                                                     "Tails",
-                                                                     "Heads",
-                                                                     "Tails",
-                                                                     "Tails",
-                                                                     "Heads",
-                                                                     "Tails",
-                                                                     "Heads",
-                                                                     "Tails",
-                                                                     "Heads",
-                                                                     "Tails",
-                                                                     "Heads",
-                                                                     "Tails",
-                                                                     "Heads",
-                                                                     "Tails",
-                                                                     "Tails",
-                                                                     "Heads",
-                                                                     "Tails",
-                                                                     "Heads",
-                                                                     "Tails",
-                                                                     "Heads",
-                                                                     "Tails",
-                                                                     "Heads",
-                                                                     "Tails",
-                                                                     "Heads",
-                                                                     "Tails",
-                                                                     "it landed on the side! :O!",]))
+         await client.send_message(message.channel, random.choice(("Heads "*22).split() + ("Tails "*22).split() + ["it landed on the side! :O!"]))
     if message.content.upper().startswith(command_prefix + "WHAT SHOULD I DRAW"):
-         await client.send_message(message.channel, ":paintbrush: " + random.choice(["A man",
-                                                                     "a woman",
-                                                                     "a teenager",
-                                                                     "a child",
-                                                                     "a baby",
-                                                                     "a firefighter",
-                                                                     "a princess",
-                                                                     "a mermaid",
-                                                                     "a dragon",
-                                                                     "a cheerleader",
-                                                                     "a furry",
-                                                                     "an emo",
-                                                                     "a vampire",
-                                                                     "a lion",
-                                                                     "a hunter",
-                                                                     "a knight",
-                                                                     "an alien",
-                                                                     "a cowboy",
-                                                                     "an anime character",
-                                                                     "a cat",
-                                                                     "a dog",
-                                                                     "a teacher",
-                                                                     "a salesperson",
-                                                                     "a rockstar",
-                                                                     "a rebel",
-                                                                     "a ninja",
-                                                                     "a samurai",
-                                                                     "a body builder",
-                                                                     "a doctor",
-                                                                     "a monkey",]) + " wearing " + random.choice(["a hat ",
-                                                                                                               "a snazzy jacket ",
-                                                                                                               "a leather skirt ",
-                                                                                                               "a cowboy hat ",
-                                                                                                               "a cool cape ",
-                                                                                                               "a pair of clown shoes ",
-                                                                                                               "chain mail armor ",
-                                                                                                               "a little backpack ",
-                                                                                                               "a pair of skinny jeans ",
-                                                                                                               "a summer dress ",
-                                                                                                               "a fursuit ",
-                                                                                                               "heavy eyeliner ",
-                                                                                                               "an anime-like hairstyle ",
-                                                                                                               "a vest ",
-                                                                                                               "nothing ",
-                                                                                                               "a giant poofy jacket ",]) + "while " + random.choice(["dancing ",
-                                                                                                                                                        "fighting robots ",
-                                                                                                                                                        "giving a speech ",
-                                                                                                                                                        "watching anime ",
-                                                                                                                                                        "eating fruits ",
-                                                                                                                                                        "a pair of clown shoes ",
-                                                                                                                                                        "hunting evil zombies ",
-                                                                                                                                                        "chilling with friends ",
-                                                                                                                                                        "studying ",
-                                                                                                                                                        "baking a cake ",
-                                                                                                                                                        "hanging out with puppies ",
-                                                                                                                                                        "playing the guitar ",
-                                                                                                                                                        "stargazing ",
-                                                                                                                                                        "drawing ",
-                                                                                                                                                        "playing a game ",
-                                                                                                                                                        "having a picnic ",]) + "at " + random.choice(["the cinema",
-                                                                                                                                                                                          "the park",
-                                                                                                                                                                                          "at a concert",
-                                                                                                                                                                                          "the opening of a mountain cave",
-                                                                                                                                                                                          "the graveyard",
-                                                                                                                                                                                          "home",
-                                                                                                                                                                                          "the zoo",
-                                                                                                                                                                                          "a furry convention",
-                                                                                                                                                                                          "a furry convention",
-                                                                                                                                                                                          "a party",
-                                                                                                                                                                                          "school",
-                                                                                                                                                                                          "a friends' house",
-                                                                                                                                                                                          "the beach",
-                                                                                                                                                                                          "the mall",
-                                                                                                                                                                                          "the department store",
-                                                                                                                                                                                          "a playground",]) + " :paintbrush:")
-         
+        person = ["a man", "a woman", "a teenager", "a child", "a baby", "a firefighter", "a princess",
+                  "a mermaid", "a dragon", "a cheerleader", "a furry", "an emo", "a vampire", "a lion",
+                  "a hunter", "a knight", "an alien", "a cowboy", "an anime character", "a cat",
+                  "a dog", "a teacher", "a salesperson", "a rockstar", "a rebel", "a ninja", "a samurai",
+                  "a body builder", "a doctor", "a monkey"]
+
+        clothing = ["a hat", "a snazzy jacket", "a leather skirt", "a cowboy hat", "a cool cape", "a pair of clown shoes",
+                    "chain mail armor", "a little backpack", "a pair of skinny jeans", "a summer dress", "a fursuit",
+                    "heavy eyeliner", "an anime-like hairstyle", "a vest", "nothing", "a giant poofy jacket"]
+        
+        activity = ["dancing", "fighting robots", "giving a speech", "watching anime", "eating fruits", "a pair of clown shoes",
+                    "hunting evil zombies", "chilling with friends", "studying","baking a cake", "hanging out with puppies",
+                    "playing the guitar", "stargazing", "drawing", "playing a game", "having a picnic"]
+        
+        place = ["the cinema", "the park", "at a concert", "the opening of a mountain cave", "the graveyard", "home",
+                 "the zoo", "a furry convention", "a furry convention", "a party", "school", "a friends' house", "the beach",
+                 "the mall", "the department store", "a playground"]
+
+        await client.send_message(message.channel, """:paintbrush: {person} wearing {clothing} while {activity} at {place} :paintbrush:""".format(person=random.choice(person), clothing=random.choice(clothing), activity=random.choice(activity), place=random.choice(place)))
+
 
 
 
